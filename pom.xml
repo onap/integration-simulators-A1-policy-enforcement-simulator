@@ -125,6 +125,44 @@
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.1.7</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>true</springmvc>
+                            <locations>org.onap.a1pesimulator</locations>
+                            <schemes>http</schemes>
+                            <host>localhost:9998</host>
+                            <basePath>/</basePath>
+                            <info>
+                                <title> A1 Policy Enforcement Simulator REST APIs (Policy Enforcement PoC) </title>
+                                <version>${project.version}</version>
+                                <description>
+                                    This interface supports the A1-P OSC_2.1.0 API also provides internal API to managed the RAN elements (Cells, Ues) and allows to customized the send VES Events
+                                </description>
+                                <license>
+                                    <name>Copyright (C) 2021 Samsung Electronics</name>
+                                </license>
+                            </info>
+                            <swaggerDirectory>${basedir}/doc/swagger/</swaggerDirectory>
+                            <swaggerFileName>a1-pe-simulator-spec</swaggerFileName>
+                            <templatePath>${basedir}/doc/swagger/templates/strapdown.html.hbs</templatePath>
+                            <outputPath>${basedir}/doc/swagger/html/a1-pe-simulator-api.html</outputPath>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
