@@ -1,0 +1,125 @@
+{
+  "cellList": [
+    {
+      "Cell": {
+        "networkId": "RAN001",
+        "nodeId": "Chn0000",
+        "physicalCellId": 0,
+        "pnfName": "ncserver1",
+        "sectorNumber": 0,
+        "latitude": "50.11",
+        "longitude": "19.98"
+      },
+      "neighbor": [
+        {
+          "nodeId": "Chn0002",
+          "blacklisted": "false"
+        },
+        {
+          "nodeId": "Chn0003",
+          "blacklisted": "false"
+        },
+        {
+          "nodeId": "Chn0001",
+          "blacklisted": "false"
+        }
+      ]
+    },
+    {
+      "Cell": {
+        "networkId": "RAN001",
+        "nodeId": "Chn0001",
+        "physicalCellId": 1,
+        "pnfName": "ncserver1",
+        "sectorNumber": 0,
+        "latitude": "50.06",
+        "longitude": "20.03"
+      },
+      "neighbor": [
+        {
+          "nodeId": "Chn0004",
+          "blacklisted": "false"
+        },
+        {
+          "nodeId": "Chn0000",
+          "blacklisted": "false"
+        },
+        {
+          "nodeId": "Chn0002",
+          "blacklisted": "false"
+        }
+      ]
+    },
+    {
+      "Cell": {
+        "networkId": "RAN001",
+        "nodeId": "Chn0002",
+        "physicalCellId": 3,
+        "pnfName": "ncserver1",
+        "sectorNumber": 0,
+        "latitude": "50.06",
+        "longitude": "19.94"
+      },
+      "neighbor": [
+        {
+          "nodeId": "Chn0004",
+          "blacklisted": "false"
+        },
+        {
+          "nodeId": "Chn0000",
+          "blacklisted": "false"
+        },
+        {
+          "nodeId": "Chn0003",
+          "blacklisted": "false"
+        },
+        {
+          "nodeId": "Chn0001",
+          "blacklisted": "false"
+        }
+      ]
+    },
+    {
+      "Cell": {
+        "networkId": "RAN001",
+        "nodeId": "Chn0003",
+        "physicalCellId": 4,
+        "pnfName": "ncserver1",
+        "sectorNumber": 0,
+        "latitude": "50.11",
+        "longitude": "19.88"
+      },
+      "neighbor": [
+        {
+          "nodeId": "Chn0002",
+          "blacklisted": "false"
+        },
+        {
+          "nodeId": "Chn0000",
+          "blacklisted": "false"
+        }
+      ]
+    },
+    {
+      "Cell": {
+        "networkId": "RAN001",
+        "nodeId": "Chn0004",
+        "physicalCellId": 6,
+        "pnfName": "ncserver1",
+        "sectorNumber": 0,
+        "latitude": "50.01",
+        "longitude": "19.99"
+      },
+      "neighbor": [
+        {
+          "nodeId": "Chn0002",
+          "blacklisted": "false"
+        },
+        {
+          "nodeId": "Chn0001",
+          "blacklisted": "false"
+        }
+      ]
+    }
+  ]
+}
