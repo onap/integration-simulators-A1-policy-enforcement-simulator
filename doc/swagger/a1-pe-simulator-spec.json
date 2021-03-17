@@ -1,0 +1,687 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This interface supports the A1-P OSC_2.1.0 API also provides internal API to managed the RAN elements (Cells, Ues) and allows to customized the send VES Events",
+    "version" : "1.0-SNAPSHOT",
+    "title" : "A1 Policy Enforcement Simulator REST APIs (Policy Enforcement PoC)",
+    "license" : {
+      "name" : "Copyright (C) 2021 Samsung Electronics"
+    }
+  },
+  "host" : "localhost:9998",
+  "basePath" : "/",
+  "schemes" : [ "http" ],
+  "paths" : {
+    "${restapi.version}/a1-p/healthcheck" : {
+      "get" : {
+        "operationId" : "healthcheck",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/a1-p/policytypes" : {
+      "get" : {
+        "operationId" : "getPolicyTypeIds",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/a1-p/policytypes/{policyTypeId}" : {
+      "get" : {
+        "operationId" : "getPolicyType",
+        "parameters" : [ {
+          "name" : "policyTypeId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "put" : {
+        "operationId" : "putPolicySchema",
+        "parameters" : [ {
+          "name" : "policyTypeId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/a1-p/policytypes/{policyTypeId}/policies" : {
+      "get" : {
+        "operationId" : "getPolicyIdsOfType",
+        "parameters" : [ {
+          "name" : "policyTypeId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/a1-p/policytypes/{policyTypeId}/policies/{policyInstanceId}" : {
+      "get" : {
+        "operationId" : "getPolicy",
+        "parameters" : [ {
+          "name" : "policyTypeId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "policyInstanceId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "put" : {
+        "operationId" : "putPolicyInstance",
+        "parameters" : [ {
+          "name" : "policyTypeId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "policyInstanceId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "operationId" : "deletePolicyInstance",
+        "parameters" : [ {
+          "name" : "policyTypeId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "policyInstanceId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran" : {
+      "get" : {
+        "operationId" : "getRan",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Topology"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/cells" : {
+      "get" : {
+        "operationId" : "getCells",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/RanCell"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/cells/{identifier}" : {
+      "get" : {
+        "operationId" : "getCellById",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/CellDetails"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/cells/{identifier}/eventStructure" : {
+      "get" : {
+        "operationId" : "getVesEventStructure",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Event"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/cells/{identifier}/start" : {
+      "post" : {
+        "operationId" : "startSendingVesEvents",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Event"
+          }
+        }, {
+          "name" : "identifier",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "interval",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/cells/{identifier}/startFailure" : {
+      "post" : {
+        "operationId" : "startSendingFailureVesEvents",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/cells/{identifier}/stop" : {
+      "post" : {
+        "operationId" : "stopSendingVesEvents",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/cells/{identifier}/stopFailure" : {
+      "post" : {
+        "operationId" : "stopSendingFailureVesEvents",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/eventConfig" : {
+      "get" : {
+        "operationId" : "getEventConfig",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/GlobalVesConfiguration"
+            }
+          }
+        }
+      },
+      "post" : {
+        "operationId" : "setEventConfig",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/GlobalVesConfiguration"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/refresh" : {
+      "get" : {
+        "operationId" : "refreshRan",
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/ues" : {
+      "get" : {
+        "operationId" : "getUes",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/RanUserEquipment"
+            }
+          }
+        }
+      }
+    },
+    "${restapi.version}/ran/ues/{identifier}" : {
+      "get" : {
+        "operationId" : "getUeById",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/UserEquipment"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "AdditionalInformation" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "AdditionalMeasurement" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "hashMap" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "CellDetails" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "latitude" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "longitude" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "connectedUserEquipments" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "currentState" : {
+          "type" : "string",
+          "readOnly" : true,
+          "enum" : [ "INACTIVE", "ACTIVE", "GOING_TO_SLEEP", "SLEEPING" ]
+        }
+      }
+    },
+    "CommonEventHeader" : {
+      "type" : "object",
+      "properties" : {
+        "eventType" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        },
+        "vesEventListenerVersion" : {
+          "type" : "string"
+        },
+        "sourceId" : {
+          "type" : "string"
+        },
+        "reportingEntityName" : {
+          "type" : "string"
+        },
+        "startEpochMicrosec" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "eventId" : {
+          "type" : "string"
+        },
+        "lastEpochMicrosec" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "priority" : {
+          "type" : "string"
+        },
+        "sequence" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "sourceName" : {
+          "type" : "string"
+        },
+        "domain" : {
+          "type" : "string"
+        },
+        "eventName" : {
+          "type" : "string"
+        },
+        "reportingEntityId" : {
+          "type" : "string"
+        },
+        "nfcNamingCode" : {
+          "type" : "string"
+        },
+        "nfNamingCode" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Event" : {
+      "type" : "object",
+      "properties" : {
+        "commonEventHeader" : {
+          "$ref" : "#/definitions/CommonEventHeader"
+        },
+        "faultFields" : {
+          "$ref" : "#/definitions/FaultFields"
+        },
+        "measurementFields" : {
+          "$ref" : "#/definitions/MeasurementFields"
+        }
+      }
+    },
+    "FaultFields" : {
+      "type" : "object",
+      "properties" : {
+        "faultFieldsVersion" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "eventSeverity" : {
+          "type" : "string"
+        },
+        "eventSourceType" : {
+          "type" : "string"
+        },
+        "eventCategory" : {
+          "type" : "string"
+        },
+        "alarmCondition" : {
+          "type" : "string"
+        },
+        "specificProblem" : {
+          "type" : "string"
+        },
+        "vfStatus" : {
+          "type" : "string"
+        },
+        "alarmInterfaceA" : {
+          "type" : "string"
+        },
+        "alarmAdditionalInformation" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/AdditionalInformation"
+          }
+        }
+      }
+    },
+    "GlobalVesConfiguration" : {
+      "type" : "object",
+      "properties" : {
+        "interval" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "event" : {
+          "$ref" : "#/definitions/Event"
+        }
+      }
+    },
+    "MeasurementFields" : {
+      "type" : "object",
+      "properties" : {
+        "measurementInterval" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "measurementFieldsVersion" : {
+          "type" : "string"
+        },
+        "additionalMeasurements" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/AdditionalMeasurement"
+          }
+        }
+      }
+    },
+    "Optional" : {
+      "type" : "object",
+      "properties" : {
+        "empty" : {
+          "type" : "boolean"
+        },
+        "present" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "OptionalEvent" : {
+      "type" : "object",
+      "properties" : {
+        "empty" : {
+          "type" : "boolean"
+        },
+        "present" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "RanCell" : {
+      "type" : "object",
+      "properties" : {
+        "cells" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CellDetails"
+          }
+        },
+        "itemsLength" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      }
+    },
+    "RanUserEquipment" : {
+      "type" : "object",
+      "properties" : {
+        "ues" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/UserEquipment"
+          }
+        },
+        "itemsLength" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      }
+    },
+    "Topology" : {
+      "type" : "object",
+      "properties" : {
+        "cells" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CellDetails"
+          }
+        },
+        "userEquipments" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/UserEquipment"
+          }
+        }
+      }
+    },
+    "UserEquipment" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "latitude" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "longitude" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "cellId" : {
+          "type" : "string"
+        },
+        "cellsInRange" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
