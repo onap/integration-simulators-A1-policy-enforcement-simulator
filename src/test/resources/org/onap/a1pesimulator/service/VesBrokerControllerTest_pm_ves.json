@@ -1,0 +1,35 @@
+{
+    "event":{
+        "commonEventHeader": {
+            "version": "4.0.1",
+            "vesEventListenerVersion": "7.0.1",
+            "domain": "measurement",
+            "eventName": "Measurement_vIsbcMmc",
+            "eventId": "measurement0000259",
+            "sequence": 3,
+            "priority": "Normal",
+            "reportingEntityId": "cc305d54-75b4-431b-adb2-eb6b9e541234",
+            "reportingEntityName": "ibcx0001vm002oam001",
+            "sourceId": "de305d54-75b4-431b-adb2-eb6b9e546014",
+            "sourceName": "ibcx0001vm002ssc001",
+            "nfVendorName": "Samsung",
+            "nfNamingCode": "ibcx",
+            "nfcNamingCode": "ssc",
+            "startEpochMicrosec": 1413378172000000,
+            "lastEpochMicrosec": 1413378172000000,
+            "timeZoneOffset": "UTC-05:30"
+        },
+        "measurementFields" : {
+            "additionalMeasurements" : [
+                {
+                    "name": "latency",
+                    "hashMap": {
+                        "value": "[[100-150]]"
+                    }
+                }
+            ],
+            "measurementInterval" : 5,
+            "measurementFieldsVersion" : "4.0"
+        }
+    }
+}
