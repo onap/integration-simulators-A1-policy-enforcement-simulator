@@ -1,0 +1,20 @@
+[
+  {
+    "id": "mobile_samsung_s10",
+    "latitude": "50.09",
+    "longitude": "19.94",
+    "cellId": "Chn0000"
+  },
+  {
+    "id": "mobile_samsung_s20",
+    "latitude": "50.05",
+    "longitude": "19.95",
+    "cellId": "Chn0002"
+  },
+  {
+    "id": "emergency_police_111",
+    "latitude": "50.035",
+    "longitude": "19.97",
+    "cellId": "Chn0002"
+  }
+]
