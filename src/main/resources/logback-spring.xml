@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2021 Samsung Electronics
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <springProfile name="!dev">
+
+        <property name="LOG_DIR" value="${user.home}/log/${proc.name}"/>
+
+        <appender name="A1-PE-SIMULATOR-METRICS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>INFO</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_DIR}/application/metrics-%d{yyyy-MM-dd}.%i.log.gz
+                </fileNamePattern>
+                <maxFileSize>30MB</maxFileSize>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>1GB</totalSizeCap>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS+00:00}|NULL|%-5level:%class{36}:%M:%L: %m%n
+                </pattern>
+            </layout>
+        </appender>
+
+        <appender name="A1-PE-SIMULATOR-DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>DEBUG</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_DIR}/application/debug-%d{yyyy-MM-dd}.%i.log.gz
+                </fileNamePattern>
+                <maxFileSize>30MB</maxFileSize>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>1GB</totalSizeCap>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS+00:00}|NULL|%-5level:%class{36}:%M:%L: %m%n
+                </pattern>
+            </layout>
+        </appender>
+
+        <appender name="A1-PE-SIMULATOR-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_DIR}/application/error-%d{yyyy-MM-dd}.%i.log.gz
+                </fileNamePattern>
+                <maxFileSize>30MB</maxFileSize>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>1GB</totalSizeCap>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS+00:00}|NULL|%-5level:%class{36}:%M:%L: %m%n
+                </pattern>
+            </layout>
+        </appender>
+
+        <appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_DIR}/debug-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <maxFileSize>30MB</maxFileSize>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>1GB</totalSizeCap>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS+00:00}|NULL|%-5level:%class{36}:%M:%L: %m%n
+                </pattern>
+            </layout>
+        </appender>
+
+        <logger name="org.onap.a1pesimulator" level="debug" additivity="false">
+            <appender-ref ref="A1-PE-SIMULATOR-DEBUG"/>
+            <appender-ref ref="A1-PE-SIMULATOR-METRICS"/>
+            <appender-ref ref="A1-PE-SIMULATOR-ERROR"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="debugAppender"/>
+        </root>
+
+    </springProfile>
+
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+</configuration>
