@@ -234,6 +234,30 @@
       "revId": "1a5f667ea2b14c62346b851c98fe8e42c80069eb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b266b97a_9c5c7f1b",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/cell/RanCellStateService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2021-03-23T13:31:49Z",
+      "side": 1,
+      "message": "It\u0027s not refactoring if you change the behaviour :)",
+      "parentUuid": "2b927a09_f46345a2",
+      "range": {
+        "startLine": 110,
+        "startChar": 10,
+        "endLine": 112,
+        "endChar": 9
+      },
+      "revId": "1a5f667ea2b14c62346b851c98fe8e42c80069eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
