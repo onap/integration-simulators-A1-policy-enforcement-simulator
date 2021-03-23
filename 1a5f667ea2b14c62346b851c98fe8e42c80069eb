@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "2c4ef935_42cef8ea",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/cell/RanCellStateService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-03-23T12:59:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6836479d_20094116",
+      "range": {
+        "startLine": 42,
+        "startChar": 56,
+        "endLine": 42,
+        "endChar": 64
+      },
+      "revId": "1a5f667ea2b14c62346b851c98fe8e42c80069eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "93838088_d77e1142",
         "filename": "src/main/java/org/onap/a1pesimulator/service/cell/RanCellStateService.java",
         "patchSetId": 4
@@ -45,6 +69,30 @@
       "revId": "1a5f667ea2b14c62346b851c98fe8e42c80069eb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e28f2cd5_9715799c",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/cell/RanCellStateService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-03-23T12:59:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93838088_d77e1142",
+      "range": {
+        "startLine": 55,
+        "startChar": 22,
+        "endLine": 55,
+        "endChar": 76
+      },
+      "revId": "1a5f667ea2b14c62346b851c98fe8e42c80069eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "85b9180a_250f2ae4",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/cell/RanCellStateService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-03-23T12:59:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9d69608_6ae978b1",
+      "range": {
+        "startLine": 68,
+        "startChar": 22,
+        "endLine": 68,
+        "endChar": 74
+      },
+      "revId": "1a5f667ea2b14c62346b851c98fe8e42c80069eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5746b5f1_c5907a72",
         "filename": "src/main/java/org/onap/a1pesimulator/service/cell/RanCellStateService.java",
         "patchSetId": 4
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "1968ed27_b6affcce",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/cell/RanCellStateService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-03-23T12:59:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5746b5f1_c5907a72",
+      "range": {
+        "startLine": 98,
+        "startChar": 22,
+        "endLine": 98,
+        "endChar": 39
+      },
+      "revId": "1a5f667ea2b14c62346b851c98fe8e42c80069eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3b79a4ab_88f3d5e9",
         "filename": "src/main/java/org/onap/a1pesimulator/service/cell/RanCellStateService.java",
         "patchSetId": 4
@@ -114,6 +210,30 @@
       "revId": "1a5f667ea2b14c62346b851c98fe8e42c80069eb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b927a09_f46345a2",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/cell/RanCellStateService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-03-23T12:59:31Z",
+      "side": 1,
+      "message": "Ack, refactored",
+      "parentUuid": "3b79a4ab_88f3d5e9",
+      "range": {
+        "startLine": 110,
+        "startChar": 10,
+        "endLine": 112,
+        "endChar": 9
+      },
+      "revId": "1a5f667ea2b14c62346b851c98fe8e42c80069eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
