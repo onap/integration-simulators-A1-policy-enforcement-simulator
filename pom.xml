@@ -163,7 +163,69 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <!--<apiVersion>${docker.api.version}</apiVersion>-->
+                    <registry>nexus3.onap.org:10001</registry>
+                    <authConfig>
+                        <pull>
+                            <username>docker</username>
+                            <password>docker</password>
+                        </pull>
+                    </authConfig>
+                    <images>
+                        <image>
+                            <name>a1-pe-simulator</name>
+                            <build>
+                                <cleanup>try</cleanup>
+                                <!--<dockerFileDir>docker</dockerFileDir>-->
+                                <tags>
+                                    <tag>latest</tag>
+                                    <!--<tag>
+                                        ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}-STAGING-latest
+                                    </tag>
+                                    <tag>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}-${maven.build.timestamp}</tag>
+                                    -->
+                                </tags>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>clean-images</id>
+                        <phase>pre-clean</phase>
+                        <goals>
+                            <goal>remove</goal>
+                        </goals>
+                        <configuration>
+                            <removeAll>true</removeAll>
+                            <image>a1-pe-simulator</image>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-images</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>push-images</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <image>a1-pe-simulator</image>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
 </project>
+
