@@ -90,6 +90,13 @@
 
     <properties>
         <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
+        <skipDockerPush>true</skipDockerPush>
+        <docker.registry>nexus3.onap.org:10003</docker.registry>
+        <docker-maven-plugin.version>0.31.0</docker-maven-plugin.version>
+        <docker-image.namespace>onap</docker-image.namespace>
+        <docker-image.name.prefix>org.onap.a1pesimulator</docker-image.name.prefix>
     </properties>
 
     <build>
@@ -163,7 +170,39 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>docker-build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skipPush>${skipDockerPush}</skipPush>
+                    <verbose>true</verbose>
+                    <imagePullPolicy>IfNotPresent</imagePullPolicy>
+                    <images>
+                        <image>
+                            <name>${docker-image.namespace}/${docker-image.name.prefix}.${project.artifactId}</name>
+                            <registry>${docker.registry}</registry>
+                            <build>
+                                <tags>
+                                    <tag>${project.version}-${maven.build.timestamp}Z</tag>
+                                </tags>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
 </project>
+
