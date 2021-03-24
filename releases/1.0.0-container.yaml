@@ -1,0 +1,9 @@
+distribution_type: 'container'
+container_release_tag: '1.0.0'
+container_pull_registry: nexus3.onap.org:10003
+container_push_registry: nexus3.onap.org:10002
+project: 'a1-pe-simulator'
+ref: 0dd51d95a935a76f14e1fc68d29b4254618fa233
+containers:
+    - name: a1-pe-simulator
+      version: 1.0-SNAPSHOT-STAGE-20210324T144634Z
