@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a7d255d8_f97fd6f6",
+        "filename": "docker/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5097
+      },
+      "writtenOn": "2021-03-24T13:05:23Z",
+      "side": 1,
+      "message": "This was internally rebased on nexus3.onap.org:10001/onap/integration-java11:8.0.0, you should rebase this dockerfile on those changes.",
+      "range": {
+        "startLine": 1,
+        "startChar": 5,
+        "endLine": 1,
+        "endChar": 14
+      },
+      "revId": "e3a55c44c908512e6e0a8d0dba45f84aa37f71dd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
