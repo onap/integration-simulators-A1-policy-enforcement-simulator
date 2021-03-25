@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf8fa597_3f15f270",
+        "filename": "releases/1.0.0-container.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5550
+      },
+      "writtenOn": "2021-03-25T11:53:14Z",
+      "side": 1,
+      "message": "Not sure, but shouldn\u0027t we name simulator after full project path, ie. integration/simulators/A1-policy-enforement-simulator:$tag ? @Bartek - is there any guideline about it from integration team pov?",
+      "range": {
+        "startLine": 5,
+        "startChar": 10,
+        "endLine": 5,
+        "endChar": 25
+      },
+      "revId": "e21679ad7efcaed9a799bf039948d6f68b0e249a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
