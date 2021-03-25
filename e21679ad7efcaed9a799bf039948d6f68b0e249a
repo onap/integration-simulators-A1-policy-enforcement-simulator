@@ -22,6 +22,30 @@
       "revId": "e21679ad7efcaed9a799bf039948d6f68b0e249a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b062191e_8065c9b3",
+        "filename": "releases/1.0.0-container.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5097
+      },
+      "writtenOn": "2021-03-25T12:27:30Z",
+      "side": 1,
+      "message": "Yes, looks like it should resemble the \"project-name\" name in JJB so it should be \"integration-simulators-A1-policy-enforcement-simulator\", see project-name in https://git.onap.org/ci-management/tree/jjb/integration/simulators/integration-A1-policy-enforcement-simulator.yaml",
+      "parentUuid": "cf8fa597_3f15f270",
+      "range": {
+        "startLine": 5,
+        "startChar": 10,
+        "endLine": 5,
+        "endChar": 25
+      },
+      "revId": "e21679ad7efcaed9a799bf039948d6f68b0e249a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
