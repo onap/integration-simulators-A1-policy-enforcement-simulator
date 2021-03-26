@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac00313c_88788ecc",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2021-03-26T10:46:30Z",
+      "side": 1,
+      "message": "What is RMR?",
+      "range": {
+        "startLine": 169,
+        "startChar": 149,
+        "endLine": 169,
+        "endChar": 152
+      },
+      "revId": "b430f68d10df314b8d3428fc0c18ff6d514d578d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
