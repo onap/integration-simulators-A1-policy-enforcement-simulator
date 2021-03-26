@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0095d86f_af8eb931",
+        "filename": "pom.xml",
+        "patchSetId": 8
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2021-03-26T12:39:31Z",
+      "side": 1,
+      "message": "remove this",
+      "range": {
+        "startLine": 197,
+        "startChar": 59,
+        "endLine": 197,
+        "endChar": 66
+      },
+      "revId": "19a3f35794cc22595e108c245525c32737d20bce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
