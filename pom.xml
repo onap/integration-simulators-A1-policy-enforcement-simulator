@@ -133,6 +133,27 @@
                 <artifactId>maven-resources-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <copy file="target/a1-pe-simulator-1.0-SNAPSHOT.jar" tofile="./docker/a1-pe-simulator-1.0-SNAPSHOT.jar"/>
+                                <copy todir="./docker/resource">
+                                    <fileset dir="src/main/resources"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.github.kongchen</groupId>
                 <artifactId>swagger-maven-plugin</artifactId>
                 <version>3.1.7</version>
@@ -177,7 +198,7 @@
                 <executions>
                     <execution>
                         <id>docker-build-image</id>
-                        <phase>package</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>build</goal>
                             <goal>push</goal>
@@ -193,6 +214,7 @@
                             <name>${docker-image.namespace}/${docker-image.name.prefix}.${project.artifactId}</name>
                             <registry>${docker.registry}</registry>
                             <build>
+                                <dockerFileDir>${project.basedir}/docker</dockerFileDir>
                                 <tags>
                                     <tag>${project.version}-${maven.build.timestamp}Z</tag>
                                 </tags>
