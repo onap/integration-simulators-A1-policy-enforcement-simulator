@@ -133,6 +133,27 @@
                 <artifactId>maven-resources-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <copy file="target/${project.artifactId}-${project.version}.jar" tofile="./docker/${project.artifactId}-${project.version}.jar"/>
+                                <copy todir="./docker/resource">
+                                    <fileset dir="src/main/resources"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.github.kongchen</groupId>
                 <artifactId>swagger-maven-plugin</artifactId>
                 <version>3.1.7</version>
@@ -177,7 +198,7 @@
                 <executions>
                     <execution>
                         <id>docker-build-image</id>
-                        <phase>package</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>build</goal>
                             <goal>push</goal>
@@ -190,9 +211,10 @@
                     <imagePullPolicy>IfNotPresent</imagePullPolicy>
                     <images>
                         <image>
-                            <name>${docker-image.namespace}/${docker-image.name.prefix}.${project.artifactId}</name>
+                            <name>onap/integration/simulators/${project.artifactId}</name>
                             <registry>${docker.registry}</registry>
                             <build>
+                                <dockerFileDir>${project.basedir}/docker</dockerFileDir>
                                 <tags>
                                     <tag>${project.version}-${maven.build.timestamp}Z</tag>
                                 </tags>
