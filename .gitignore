@@ -105,3 +105,6 @@ local.properties
 # Typically, this file would be tracked if it contains build/dependency configurations:
 #.project
 a1-pe-simulator.iml
+
+# Building docker-image files
+**/docker/resource/*
