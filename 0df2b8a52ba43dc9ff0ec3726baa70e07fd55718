@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Krystian Kedron <k.kedron@partner.samsung.com>
+Code-Review+1: Konrad Banka <k.banka@samsung.com>
+Code-Review+2: Lasse Kaihlavirta <l.kaihlavirt@partner.samsung.com>
+Submitted-by: Lasse Kaihlavirta <l.kaihlavirt@partner.samsung.com>
+Submitted-at: Thu, 22 Apr 2021 16:21:30 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/integration/simulators/A1-policy-enforcement-simulator/+/120600
+Project: integration/simulators/A1-policy-enforcement-simulator
+Branch: refs/heads/master
