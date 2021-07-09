@@ -21,5 +21,5 @@ import lombok.Getter;
 public class GlobalVesConfiguration {
 
     private Integer interval;
-    private Event event;
+    private VesEvent event;
 }

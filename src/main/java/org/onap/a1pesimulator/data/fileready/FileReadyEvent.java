@@ -11,17 +11,14 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.util;
+package org.onap.a1pesimulator.data.fileready;
 
-public class Constants {
+import org.onap.a1pesimulator.data.Event;
 
-    private Constants() {
-    }
+import lombok.Data;
 
-    public static final String MEASUREMENT_FIELD_IDENTIFIER = "identifier";
-    public static final String MEASUREMENT_FIELD_VALUE = "value";
-    public static final String FILE_READY_CHANGE_IDENTIFIER = "PM_MEAS_FILES";
-    public static final String FILE_READY_CHANGE_TYPE = "FileReady";
-    public static final String EMPTY_STRING = "";
-    public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
+@Data
+public class FileReadyEvent extends Event {
+
+    private NotificationFields notificationFields;
 }

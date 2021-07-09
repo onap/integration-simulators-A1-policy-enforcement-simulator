@@ -20,26 +20,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import org.onap.a1pesimulator.data.ves.Event;
+
+import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.data.ves.MeasurementFields.AdditionalMeasurement;
+import org.onap.a1pesimulator.service.common.EventCustomizer;
 import org.onap.a1pesimulator.service.ue.RanUeHolder;
-import org.onap.a1pesimulator.service.ves.RanSendVesRunnable.EventCustomizer;
 import org.onap.a1pesimulator.util.Constants;
 import org.onap.a1pesimulator.util.JsonUtils;
 import org.onap.a1pesimulator.util.RanVesUtils;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 public class RanCellFailureEventCustomizer implements EventCustomizer {
 
     private static final String UE_PARAM_TRAFFIC_MODEL_RANGE = "[[50->10]]";
     private final RanUeHolder ranUeHolder;
-    private final Event event;
+    private final VesEvent event;
 
     private final Map<Key, Value> additionalMeasurementsValues = new HashMap<>();
     private final ValueFactory valueFactory;
 
-    public RanCellFailureEventCustomizer(Event event, RanUeHolder ranUeHolder) {
+    public RanCellFailureEventCustomizer(VesEvent event, RanUeHolder ranUeHolder) {
         this.ranUeHolder = ranUeHolder;
         this.event = event;
         valueFactory = new ValueFactory();
@@ -47,11 +49,11 @@ public class RanCellFailureEventCustomizer implements EventCustomizer {
     }
 
     @Override
-    public Event apply(Event t) {
+    public VesEvent apply(VesEvent t) {
         return customizeEvent(JsonUtils.INSTANCE.clone(this.event));
     }
 
-    private void collectAdditionalMeasurementValues(Event event) {
+    private void collectAdditionalMeasurementValues(VesEvent event) {
         Collection<AdditionalMeasurement> additionalMeasurementsToResolve =
                 event.getMeasurementFields().getAdditionalMeasurements();
         additionalMeasurementsToResolve.forEach(this::collectAdditionalMeasurementValue);
@@ -67,14 +69,14 @@ public class RanCellFailureEventCustomizer implements EventCustomizer {
         }
     }
 
-    private Event customizeEvent(Event event) {
+    private VesEvent customizeEvent(VesEvent event) {
         RanVesUtils.updateHeader(event);
         enrichWithUeData(event);
         resolveRanges(event);
         return event;
     }
 
-    private void resolveRanges(Event event) {
+    private void resolveRanges(VesEvent event) {
         List<AdditionalMeasurement> additionalMeasurementsToResolve =
                 event.getMeasurementFields().getAdditionalMeasurements();
 
@@ -94,17 +96,17 @@ public class RanCellFailureEventCustomizer implements EventCustomizer {
         }
     }
 
-    private void enrichWithUeData(Event event) {
+    private void enrichWithUeData(VesEvent event) {
 
         Optional<AdditionalMeasurement> identity = event.getMeasurementFields().getAdditionalMeasurements().stream()
-                                                           .filter(msrmnt -> Constants.MEASUREMENT_FIELD_IDENTIFIER
-                                                                                     .equalsIgnoreCase(
-                                                                                             msrmnt.getName()))
-                                                           .findAny();
+                .filter(msrmnt -> Constants.MEASUREMENT_FIELD_IDENTIFIER
+                        .equalsIgnoreCase(
+                                msrmnt.getName()))
+                .findAny();
         identity.ifPresent(m -> addTrafficModelMeasurement(event, m));
     }
 
-    private void addTrafficModelMeasurement(Event event, AdditionalMeasurement identity) {
+    private void addTrafficModelMeasurement(VesEvent event, AdditionalMeasurement identity) {
         AdditionalMeasurement trafficModelMeasurement =
                 RanVesUtils.buildTrafficModelMeasurement(identity, ranUeHolder, UE_PARAM_TRAFFIC_MODEL_RANGE);
         event.getMeasurementFields().getAdditionalMeasurements().add(trafficModelMeasurement);

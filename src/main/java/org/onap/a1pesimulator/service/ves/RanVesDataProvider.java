@@ -15,14 +15,16 @@ package org.onap.a1pesimulator.service.ves;
 
 import java.io.IOException;
 import java.net.URL;
-import lombok.Setter;
-import org.onap.a1pesimulator.data.ves.Event;
+
+import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+
+import lombok.Setter;
 
 @Service
 public class RanVesDataProvider {
@@ -31,9 +33,9 @@ public class RanVesDataProvider {
     private static final String PM_FAILURE_VES_LOCATION = "classpath:failurePmVes.json";
 
     @Setter
-    private Event pmVesEvent;
+    private VesEvent pmVesEvent;
     @Setter
-    private Event failurePmVesEvent;
+    private VesEvent failurePmVesEvent;
     @Setter
     private Integer interval;
 
@@ -46,15 +48,15 @@ public class RanVesDataProvider {
     }
 
     @Cacheable("pmVes")
-    public Event loadPmVesEvent() {
+    public VesEvent loadPmVesEvent() {
         URL resourceUrl = getResourceURL(resourceLoader.getResource(PM_VES_LOCATION));
-        return JsonUtils.INSTANCE.deserializeFromFileUrl(resourceUrl, Event.class);
+        return JsonUtils.INSTANCE.deserializeFromFileUrl(resourceUrl, VesEvent.class);
     }
 
     @Cacheable("failurePmVes")
-    public Event loadFailurePmVesEvent() {
+    public VesEvent loadFailurePmVesEvent() {
         URL resourceUrl = getResourceURL(resourceLoader.getResource(PM_FAILURE_VES_LOCATION));
-        return JsonUtils.INSTANCE.deserializeFromFileUrl(resourceUrl, Event.class);
+        return JsonUtils.INSTANCE.deserializeFromFileUrl(resourceUrl, VesEvent.class);
     }
 
     public Integer getRegularVesInterval() {
@@ -68,14 +70,14 @@ public class RanVesDataProvider {
         return defaultInterval;
     }
 
-    public Event getPmVesEvent() {
+    public VesEvent getPmVesEvent() {
         if (pmVesEvent == null) {
             return loadPmVesEvent();
         }
         return pmVesEvent;
     }
 
-    public Event getFailurePmVesEvent() {
+    public VesEvent getFailurePmVesEvent() {
         if (failurePmVesEvent == null) {
             return loadFailurePmVesEvent();
         }

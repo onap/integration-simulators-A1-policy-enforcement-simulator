@@ -13,27 +13,13 @@
 
 package org.onap.a1pesimulator.data.ves;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import org.onap.a1pesimulator.data.Event;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@JsonTypeName("event")
-@JsonTypeInfo(include = As.WRAPPER_OBJECT, use = Id.NAME)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Event {
+public class VesEvent extends Event {
 
-    private CommonEventHeader commonEventHeader;
     private FaultFields faultFields;
-
     private MeasurementFields measurementFields;
 }

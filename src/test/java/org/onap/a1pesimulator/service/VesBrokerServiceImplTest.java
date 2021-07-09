@@ -15,19 +15,20 @@ package org.onap.a1pesimulator.service;
 
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
-import org.onap.a1pesimulator.data.ves.Event;
+import org.onap.a1pesimulator.data.ReportingMethodEnum;
+import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.service.ves.RanVesBrokerService;
 import org.onap.a1pesimulator.service.ves.RanVesSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -68,13 +71,13 @@ public class VesBrokerServiceImplTest {
                 ArgumentMatchers.any(HttpEntity.class), ArgumentMatchers.eq(String.class))).thenReturn(responseEntity);
 
         ResponseEntity<String> response = vesBrokerService.startSendingVesEvents("CustomIdentifier",
-                loadEventFromFile("VesBrokerControllerTest_pm_ves.json"), 10);
+                loadEventFromFile("VesBrokerControllerTest_pm_ves.json"), 10, ReportingMethodEnum.VES);
 
         Assert.assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
     }
 
-    private Event loadEventFromFile(String fileName) throws Exception {
-        return mapper.readValue(loadFileContent(fileName), Event.class);
+    private VesEvent loadEventFromFile(String fileName) throws Exception {
+        return mapper.readValue(loadFileContent(fileName), VesEvent.class);
     }
 
     private String loadFileContent(String fileName) throws IOException, URISyntaxException {

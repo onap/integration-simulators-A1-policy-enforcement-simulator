@@ -13,14 +13,20 @@
 
 package org.onap.a1pesimulator.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VnfConfig {
+
+    private static final Logger log = LoggerFactory.getLogger(VnfConfig.class);
 
     @JsonProperty("vesHost")
     private String vesHost;
@@ -34,4 +40,14 @@ public class VnfConfig {
     private String vnfId;
     @JsonProperty("vnfName")
     private String vnfName;
+    @JsonProperty("repPeriod")
+    private int repPeriod;
+
+    public int getRepPeriod() {
+        if (repPeriod == 0) {
+            log.info("repPeriod is not set or is 0, defaulting to 60s.");
+            return 60;
+        }
+        return repPeriod;
+    }
 }

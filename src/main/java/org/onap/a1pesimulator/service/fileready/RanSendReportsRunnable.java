@@ -11,33 +11,29 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.ves;
+package org.onap.a1pesimulator.service.fileready;
 
 import java.util.Collection;
 
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.service.common.AbstractRanRunnable;
 import org.onap.a1pesimulator.service.common.EventCustomizer;
+import org.onap.a1pesimulator.service.ves.OnEventAction;
 
-public class RanSendVesRunnable extends AbstractRanRunnable {
+public class RanSendReportsRunnable extends AbstractRanRunnable {
 
-    private final RanVesSender vesSender;
+    protected final RanFileReadyHolder ranFileReadyHolder;
 
-    public RanSendVesRunnable(RanVesSender vesSender, VesEvent event, EventCustomizer eventCustomizer,
+    public RanSendReportsRunnable(RanFileReadyHolder ranFileReadyHolder, VesEvent event, EventCustomizer eventCustomizer,
             Collection<OnEventAction> onEventActions) {
         super(event, eventCustomizer, onEventActions);
-        this.vesSender = vesSender;
+        this.ranFileReadyHolder = ranFileReadyHolder;
     }
 
     @Override
     public void run() {
         VesEvent customizedEvent = eventCustomizer.apply(event);
         onEventAction.forEach(action -> action.onEvent(customizedEvent));
-        vesSender.send(customizedEvent);
-    }
-
-    @Override
-    public void updateEvent(VesEvent event) {
-        this.event = event;
+        ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessage();
     }
 }

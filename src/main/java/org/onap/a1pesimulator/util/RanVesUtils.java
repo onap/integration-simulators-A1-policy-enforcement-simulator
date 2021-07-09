@@ -23,9 +23,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+
+import org.onap.a1pesimulator.data.Event;
 import org.onap.a1pesimulator.data.ue.UserEquipment;
 import org.onap.a1pesimulator.data.ves.CommonEventHeader;
-import org.onap.a1pesimulator.data.ves.Event;
 import org.onap.a1pesimulator.data.ves.MeasurementFields.AdditionalMeasurement;
 import org.onap.a1pesimulator.service.ue.RanUeHolder;
 
@@ -39,7 +40,7 @@ public class RanVesUtils {
     private static final String PATTERN_MARKER_START = "\\[\\[";
     private static final String PATTERN_MARKER_END = "\\]\\]";
 
-    private static final String UE_PARAM_TRAFFIC_MODEL = "trafficModel";
+    public static final String UE_PARAM_TRAFFIC_MODEL = "trafficModel";
     private static final int TEN_MINUTES_MICROSECONDS = 10 * 60 * 1000_000;
 
     private static final Random random = new Random();
