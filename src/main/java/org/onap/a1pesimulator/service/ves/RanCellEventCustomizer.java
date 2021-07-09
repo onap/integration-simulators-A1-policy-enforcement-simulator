@@ -15,10 +15,11 @@ package org.onap.a1pesimulator.service.ves;
 
 import java.util.List;
 import java.util.Optional;
-import org.onap.a1pesimulator.data.ves.Event;
+
+import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.data.ves.MeasurementFields.AdditionalMeasurement;
+import org.onap.a1pesimulator.service.common.EventCustomizer;
 import org.onap.a1pesimulator.service.ue.RanUeHolder;
-import org.onap.a1pesimulator.service.ves.RanSendVesRunnable.EventCustomizer;
 import org.onap.a1pesimulator.util.Constants;
 import org.onap.a1pesimulator.util.JsonUtils;
 import org.onap.a1pesimulator.util.RanVesUtils;
@@ -35,36 +36,36 @@ public class RanCellEventCustomizer implements EventCustomizer {
     }
 
     @Override
-    public Event apply(Event t) {
-        Event event = JsonUtils.INSTANCE.clone(t);
+    public VesEvent apply(VesEvent t) {
+        VesEvent event = JsonUtils.INSTANCE.clone(t);
         return customizeEvent(event);
     }
 
-    private Event customizeEvent(Event event) {
+    private VesEvent customizeEvent(VesEvent event) {
         RanVesUtils.updateHeader(event);
         enrichWithUeData(event);
         randomizeEvent(event);
         return event;
     }
 
-    private void randomizeEvent(Event event) {
+    private void randomizeEvent(VesEvent event) {
         List<AdditionalMeasurement> additionalMeasurementsToRandomize =
                 event.getMeasurementFields().getAdditionalMeasurements();
         event.getMeasurementFields().setAdditionalMeasurements(
                 RanVesUtils.randomizeAdditionalMeasurements(additionalMeasurementsToRandomize));
     }
 
-    private void enrichWithUeData(Event event) {
+    private void enrichWithUeData(VesEvent event) {
 
         Optional<AdditionalMeasurement> identity = event.getMeasurementFields().getAdditionalMeasurements().stream()
-                                                           .filter(msrmnt -> Constants.MEASUREMENT_FIELD_IDENTIFIER
-                                                                                     .equalsIgnoreCase(
-                                                                                             msrmnt.getName()))
-                                                           .findAny();
+                .filter(msrmnt -> Constants.MEASUREMENT_FIELD_IDENTIFIER
+                        .equalsIgnoreCase(
+                                msrmnt.getName()))
+                .findAny();
         identity.ifPresent(m -> addTrafficModelMeasurement(event, m));
     }
 
-    private void addTrafficModelMeasurement(Event event, AdditionalMeasurement identity) {
+    private void addTrafficModelMeasurement(VesEvent event, AdditionalMeasurement identity) {
         AdditionalMeasurement trafficModelMeasurement =
                 RanVesUtils.buildTrafficModelMeasurement(identity, ranUeHolder, UE_PARAM_TRAFFIC_MODEL_RANGE);
         event.getMeasurementFields().getAdditionalMeasurements().add(trafficModelMeasurement);

@@ -14,44 +14,30 @@
 package org.onap.a1pesimulator.service.ves;
 
 import java.util.Collection;
-import java.util.function.Function;
-import org.onap.a1pesimulator.data.ves.Event;
-import org.onap.a1pesimulator.exception.VesBrokerException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class RanSendVesRunnable implements Runnable {
+import org.onap.a1pesimulator.data.ves.VesEvent;
+import org.onap.a1pesimulator.service.common.AbstractRanRunnable;
+import org.onap.a1pesimulator.service.common.EventCustomizer;
 
-    private static final Logger log = LoggerFactory.getLogger(RanSendVesRunnable.class);
+public class RanSendVesRunnable extends AbstractRanRunnable {
 
     private final RanVesSender vesSender;
-    private Event event;
-    private final EventCustomizer eventCustomizer;
-    private final Collection<OnEventAction> onEventAction;
 
-    public RanSendVesRunnable(RanVesSender vesSender, Event event, EventCustomizer eventCustomizer,
+    public RanSendVesRunnable(RanVesSender vesSender, VesEvent event, EventCustomizer eventCustomizer,
             Collection<OnEventAction> onEventActions) {
+        super(event, eventCustomizer, onEventActions);
         this.vesSender = vesSender;
-        this.event = event;
-        this.eventCustomizer = eventCustomizer;
-        this.onEventAction = onEventActions;
     }
 
     @Override
     public void run() {
-        try {
-            Event customizedEvent = eventCustomizer.apply(event);
-            onEventAction.forEach(action -> action.onEvent(customizedEvent));
-            vesSender.send(customizedEvent);
-        } catch (VesBrokerException e) {
-            log.error("Sending scheduled event failed: {}", e.getMessage());
-        }
+        VesEvent customizedEvent = eventCustomizer.apply(event);
+        onEventAction.forEach(action -> action.onEvent(customizedEvent));
+        vesSender.send(customizedEvent);
     }
 
-    public void updateEvent(Event event) {
+    @Override
+    public void updateEvent(VesEvent event) {
         this.event = event;
     }
-
-    @FunctionalInterface
-    public interface EventCustomizer extends Function<Event, Event> { }
 }

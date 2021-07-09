@@ -11,17 +11,27 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.util;
+package org.onap.a1pesimulator.data.fileready;
 
-public class Constants {
+import java.time.ZonedDateTime;
 
-    private Constants() {
-    }
+import org.onap.a1pesimulator.data.ves.VesEvent;
 
-    public static final String MEASUREMENT_FIELD_IDENTIFIER = "identifier";
-    public static final String MEASUREMENT_FIELD_VALUE = "value";
-    public static final String FILE_READY_CHANGE_IDENTIFIER = "PM_MEAS_FILES";
-    public static final String FILE_READY_CHANGE_TYPE = "FileReady";
-    public static final String EMPTY_STRING = "";
-    public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * EventMemoryHolder object stores event's information which are collacted for a specific reporting period
+ */
+@Getter
+@Setter
+@AllArgsConstructor
+public class EventMemoryHolder {
+
+    private String cellId;
+    private String jobId;
+    private Integer granPeriod;
+    private ZonedDateTime eventDate;
+    private VesEvent event;
 }

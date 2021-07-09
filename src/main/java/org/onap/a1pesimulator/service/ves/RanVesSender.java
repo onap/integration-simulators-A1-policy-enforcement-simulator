@@ -13,9 +13,11 @@
 
 package org.onap.a1pesimulator.service.ves;
 
+import static java.util.Objects.nonNull;
+
+import org.onap.a1pesimulator.data.Event;
 import org.onap.a1pesimulator.data.VnfConfig;
 import org.onap.a1pesimulator.data.ves.CommonEventHeader;
-import org.onap.a1pesimulator.data.ves.Event;
 import org.onap.a1pesimulator.exception.VesBrokerException;
 import org.onap.a1pesimulator.util.JsonUtils;
 import org.onap.a1pesimulator.util.VnfConfigReader;
@@ -30,6 +32,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import reactor.core.publisher.Mono;
 
 @Service
 public class RanVesSender {
@@ -53,30 +57,33 @@ public class RanVesSender {
         this.vesCollectorPath = vesCollectorPath;
     }
 
-    public ResponseEntity<String> send(Event vesEvent) throws VesBrokerException {
-        VnfConfig vnfConfig = vnfConfigReader.getVnfConfig();
-        String url = getVesCollectorUrl(vnfConfig);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBasicAuth(vnfConfig.getVesUser(), vnfConfig.getVesPassword());
+    public Mono<HttpStatus> send(Event event) {
+        if (nonNull(event)) {
+            VnfConfig vnfConfig = vnfConfigReader.getVnfConfig();
+            String url = getVesCollectorUrl(vnfConfig);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBasicAuth(vnfConfig.getVesUser(), vnfConfig.getVesPassword());
 
-        setVnfInfo(vesEvent, vnfConfig);
-        String event = JsonUtils.INSTANCE.objectToPrettyString(vesEvent);
+            setVnfInfo(event, vnfConfig);
+            String eventInJson = JsonUtils.INSTANCE.objectToPrettyString(event);
 
-        log.info("Sending following VES event: {}", event);
+            log.trace("Sending following event: {} ", eventInJson);
 
-        HttpEntity<String> entity = new HttpEntity<>(event, headers);
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+            HttpEntity<String> entity = new HttpEntity<>(eventInJson, headers);
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
 
-        log.debug("Response received: {}", response);
+            log.debug("Response received: {}", response);
 
-        if (response.getStatusCode() == HttpStatus.OK || response.getStatusCode() == HttpStatus.ACCEPTED) {
-            return response;
-        } else {
-            String errorMsg =
-                    "Failed to send VES event to the collector with response status code:" + response.getStatusCode();
-            throw new VesBrokerException(errorMsg);
+            if (response.getStatusCode() == HttpStatus.OK || response.getStatusCode() == HttpStatus.ACCEPTED) {
+                return Mono.just(response.getStatusCode());
+            } else {
+                String errorMsg =
+                        "Failed to send VES event to the collector with response status code:" + response.getStatusCode();
+                return Mono.error(new VesBrokerException(errorMsg));
+            }
         }
+        return Mono.error(new VesBrokerException("There is no event to send to the collector."));
     }
 
     private String getVesCollectorUrl(VnfConfig vnfConfig) {
@@ -89,4 +96,5 @@ public class RanVesSender {
         header.setSourceName(vnfConfig.getVnfName());
         vesEvent.setCommonEventHeader(header);
     }
+
 }

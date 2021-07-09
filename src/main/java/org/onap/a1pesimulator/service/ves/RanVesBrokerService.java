@@ -16,27 +16,29 @@ package org.onap.a1pesimulator.service.ves;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import org.onap.a1pesimulator.data.ves.Event;
-import org.onap.a1pesimulator.data.ves.RanPeriodicVesEvent;
+
+import org.onap.a1pesimulator.data.ReportingMethodEnum;
+import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
+import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.springframework.http.ResponseEntity;
 
 public interface RanVesBrokerService {
 
-    ResponseEntity<String> startSendingVesEvents(String identifier, Event vesEvent, Integer interval);
+    ResponseEntity<String> startSendingVesEvents(String identifier, VesEvent vesEvent, Integer interval, ReportingMethodEnum reportingMethods);
 
-    Optional<RanPeriodicVesEvent> stopSendingVesEvents(String identifier);
+    Optional<RanPeriodicEvent> stopSendingVesEvents(String identifier);
 
-    Map<String, RanPeriodicVesEvent> getPeriodicEventsCache();
+    Map<String, RanPeriodicEvent> getPeriodicEventsCache();
 
     Collection<String> getEnabledEventElementIdentifiers();
 
-    Event getEventStructure(String identifier);
+    VesEvent getEventStructure(String identifier);
 
-    Event startSendingFailureVesEvents(String identifier);
+    VesEvent startSendingFailureVesEvents(String identifier, ReportingMethodEnum reportingMethods);
 
-    Event getGlobalPmVesStructure();
+    VesEvent getGlobalPmVesStructure();
 
-    void setGlobalPmVesStructure(Event event);
+    void setGlobalPmVesStructure(VesEvent event);
 
     Integer getGlobalVesInterval();
 
