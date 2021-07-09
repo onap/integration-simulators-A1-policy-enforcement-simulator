@@ -13,10 +13,10 @@
 
 package org.onap.a1pesimulator.service.ves;
 
-import org.onap.a1pesimulator.data.ves.Event;
+import org.onap.a1pesimulator.data.ves.VesEvent;
 
 @FunctionalInterface
 public interface OnEventAction {
 
-    void onEvent(Event event);
+    void onEvent(VesEvent event);
 }

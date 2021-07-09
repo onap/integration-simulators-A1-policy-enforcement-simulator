@@ -14,16 +14,18 @@
 package org.onap.a1pesimulator.data.ves;
 
 import java.util.concurrent.ScheduledFuture;
+
+import org.onap.a1pesimulator.service.common.AbstractRanRunnable;
+
 import lombok.Builder;
 import lombok.Data;
-import org.onap.a1pesimulator.service.ves.RanSendVesRunnable;
 
 @Data
 @Builder
 public class RanPeriodicVesEvent {
 
-    private Event event;
+    private VesEvent event;
     private Integer interval;
     private ScheduledFuture<?> scheduledFuture;
-    private RanSendVesRunnable sendVesRunnable;
+    private AbstractRanRunnable sendVesRunnable;
 }

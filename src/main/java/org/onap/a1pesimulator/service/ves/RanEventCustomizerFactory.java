@@ -14,9 +14,10 @@
 package org.onap.a1pesimulator.service.ves;
 
 import java.text.MessageFormat;
-import org.onap.a1pesimulator.data.ves.Event;
+
+import org.onap.a1pesimulator.data.ves.VesEvent;
+import org.onap.a1pesimulator.service.common.EventCustomizer;
 import org.onap.a1pesimulator.service.ue.RanUeHolder;
-import org.onap.a1pesimulator.service.ves.RanSendVesRunnable.EventCustomizer;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -30,7 +31,7 @@ public class RanEventCustomizerFactory {
         this.regularEventCustomizer = regularEventCustomizer;
     }
 
-    public EventCustomizer getEventCustomizer(Event event, Mode mode) {
+    public EventCustomizer getEventCustomizer(VesEvent event, Mode mode) {
         switch (mode) {
             case REGULAR:
                 return regularEventCustomizer;
