@@ -1,20 +1,28 @@
 package org.onap.a1pesimulator.service.fileready;
 
+import static java.util.Objects.nonNull;
+import static org.onap.a1pesimulator.util.Constants.TEMP_DIR;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.zip.GZIPOutputStream;
 
 import org.onap.a1pesimulator.data.fileready.FileData;
+import org.onap.a1pesimulator.exception.NotUploadedToFtpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import net.schmizz.sshj.SSHClient;
+import net.schmizz.sshj.sftp.SFTPClient;
+import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 import reactor.core.publisher.Mono;
 
 @Service
-@PropertySource("classpath:application.properties")
 public class FtpServerService {
 
     private static final Logger log = LoggerFactory.getLogger(FtpServerService.class);
@@ -52,8 +60,22 @@ public class FtpServerService {
      * @return archived file
      */
     private Mono<FileData> tryToCompressFile(FileData fileData) {
-        fileData.setArchivedPmBulkFile(fileData.getPmBulkFile());
-        return Mono.just(fileData);
+        File archiveBulkFile = new File(TEMP_DIR, fileData.getPmBulkFile().getName() + ".gz");
+
+        try (GZIPOutputStream zos = new GZIPOutputStream(
+                new FileOutputStream(archiveBulkFile.getAbsolutePath())); FileInputStream inputStream = new FileInputStream(fileData.getPmBulkFile())) {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = inputStream.read(buffer)) > 0) {
+                zos.write(buffer, 0, len);
+            }
+            fileData.setArchivedPmBulkFile(archiveBulkFile);
+            log.trace("Compressing file {}", fileData.getPmBulkFile().getName());
+            return Mono.just(fileData);
+        } catch (IOException e) {
+            log.error("Could not compress file ", e);
+            return Mono.empty();
+        }
     }
 
     /**
@@ -63,9 +85,49 @@ public class FtpServerService {
      * @return archived file for fileReadyEvent
      */
     private Mono<FileData> tryToUploadFileToFtp(FileData fileData) {
-        return Mono.just(fileData);
+        if (nonNull(fileData.getArchivedPmBulkFile())) {
+            SSHClient client = getSSHClient();
+            if (nonNull(client)) {
+                try (client; SFTPClient sftpClient = client.newSFTPClient()) {
+                    File archiveBulkFile = fileData.getArchivedPmBulkFile();
+                    sftpClient.put(archiveBulkFile.getAbsolutePath(), ftpServerFilepath + "/" + archiveBulkFile.getName());
+
+                    log.info("Uploading file to FTP: {}", archiveBulkFile.getAbsoluteFile());
+                    return Mono.just(fileData);
+                } catch (IOException e) {
+                    log.error("Exception while trying to upload a file", e);
+                }
+            } else {
+                log.error("Could not connect to FTP server");
+            }
+        } else {
+            log.error("There is no file to upload");
+        }
+        return Mono.error(new NotUploadedToFtpException("File was not uploaded to FTP"));
     }
 
+    /**
+     * Creates SSHClient instance
+     *
+     * @return SSHClient
+     */
+    private SSHClient getSSHClient() {
+        SSHClient client = new SSHClient();
+        try {
+            client.addHostKeyVerifier(new PromiscuousVerifier());
+            client.connect(ftpServerUrl, Integer.parseInt(ftpServerPort));
+            client.authPassword(ftpServerUsername, ftpServerPassword);
+            return client;
+        } catch (IOException e) {
+            log.error("There was an error while connecting to FTP server", e);
+            try {
+                client.close();
+            } catch (IOException ioException) {
+                log.error("There was an error while closing the connection to FTP server", e);
+            }
+            return null;
+        }
+    }
 
     /**
      * Deletes created PM Bulk File xml from temp storage after successful upload to FTP
