@@ -26,6 +26,7 @@ import static org.onap.a1pesimulator.TestHelpers.checkFirstUserEquipment;
 
 import java.util.Collection;
 import java.util.Set;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.onap.a1pesimulator.data.Topology;

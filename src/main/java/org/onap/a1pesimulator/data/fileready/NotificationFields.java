@@ -11,13 +11,13 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.data.ves;
+package org.onap.a1pesimulator.data.fileready;
+
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,13 +27,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonTypeName("event")
-@JsonTypeInfo(include = As.WRAPPER_OBJECT, use = Id.NAME)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Event {
+public class NotificationFields {
 
-    private CommonEventHeader commonEventHeader;
-    private FaultFields faultFields;
+    private String changeIdentifier;
+    private String changeType;
+    private String notificationFieldsVersion;
 
-    private MeasurementFields measurementFields;
+    private List<ArrayOfNamedHashMap> arrayOfNamedHashMap;
+
+    @Data
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ArrayOfNamedHashMap {
+
+        private String name;
+        private Map<String, String> hashMap;
+    }
 }

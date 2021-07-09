@@ -18,7 +18,7 @@ import static org.onap.a1pesimulator.service.cell.RanCellStateService.TOPIC_CELL
 import java.util.Optional;
 import org.onap.a1pesimulator.data.cell.CellDetails;
 import org.onap.a1pesimulator.data.cell.state.CellStateEnum;
-import org.onap.a1pesimulator.data.ves.Event;
+import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.data.ves.MeasurementFields;
 import org.onap.a1pesimulator.service.cell.RanCellsHolder;
 import org.slf4j.Logger;
@@ -54,7 +54,7 @@ public class RanCheckCellIsDeadOnEvent implements OnEventAction {
     }
 
     @Override
-    public void onEvent(Event event) {
+    public void onEvent(VesEvent event) {
         Optional<String> cellId = getCellIdentifier(event);
         Optional<String> throughput = getCellThroughput(event);
         Optional<String> latency = getCellLatency(event);
@@ -93,19 +93,19 @@ public class RanCheckCellIsDeadOnEvent implements OnEventAction {
         }
     }
 
-    private Optional<String> getCellIdentifier(Event event) {
+    private Optional<String> getCellIdentifier(VesEvent event) {
         return getValueFromAdditionalMeasurement(event, "identifier");
     }
 
-    private Optional<String> getCellThroughput(Event event) {
+    private Optional<String> getCellThroughput(VesEvent event) {
         return getValueFromAdditionalMeasurement(event, "throughput");
     }
 
-    private Optional<String> getCellLatency(Event event) {
+    private Optional<String> getCellLatency(VesEvent event) {
         return getValueFromAdditionalMeasurement(event, "latency");
     }
 
-    private Optional<String> getValueFromAdditionalMeasurement(Event event, String key) {
+    private Optional<String> getValueFromAdditionalMeasurement(VesEvent event, String key) {
         Optional<MeasurementFields.AdditionalMeasurement> measurement = getAdditionalMeasurement(event, key);
         return measurement.map(this::getValueFromAdditionalMeasurement);
     }
@@ -114,10 +114,10 @@ public class RanCheckCellIsDeadOnEvent implements OnEventAction {
         return measurement.getHashMap().get("value");
     }
 
-    private Optional<MeasurementFields.AdditionalMeasurement> getAdditionalMeasurement(Event event,
+    private Optional<MeasurementFields.AdditionalMeasurement> getAdditionalMeasurement(VesEvent event,
             String additionalMeasurement) {
         return event.getMeasurementFields().getAdditionalMeasurements().stream()
-                       .filter(e -> e.getName().equals(additionalMeasurement)).findFirst();
+                .filter(e -> e.getName().equals(additionalMeasurement)).findFirst();
     }
 
     private long addDelayTime(long epoch) {

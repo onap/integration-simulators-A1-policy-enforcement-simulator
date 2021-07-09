@@ -17,9 +17,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import org.onap.a1pesimulator.data.ves.Event;
+
+import org.onap.a1pesimulator.data.ReportingMethodEnum;
+import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
+import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.data.ves.MeasurementFields.AdditionalMeasurement;
-import org.onap.a1pesimulator.data.ves.RanPeriodicVesEvent;
 import org.onap.a1pesimulator.util.Constants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,31 +39,29 @@ public class RanVesBrokerServiceImpl implements RanVesBrokerService {
     }
 
     @Override
-    public Map<String, RanPeriodicVesEvent> getPeriodicEventsCache() {
+    public Map<String, RanPeriodicEvent> getPeriodicEventsCache() {
         return vesHolder.getPeriodicEventsCache();
     }
 
     @Override
-    public ResponseEntity<String> startSendingVesEvents(String identifier, Event vesEvent, Integer interval) {
-
+    public ResponseEntity<String> startSendingVesEvents(String identifier, VesEvent vesEvent, Integer interval, ReportingMethodEnum reportingMethod) {
         enrichWithIdentifier(identifier, vesEvent);
-        vesHolder.startSendingVesEvents(identifier, vesEvent, interval);
-
-        return ResponseEntity.accepted().body("VES Event sending started");
+        ResponseEntity<String> response = vesHolder.startSendingVesEvents(identifier, vesEvent, interval, reportingMethod);
+        return ResponseEntity.accepted().body(response.getBody());
     }
 
     @Override
-    public Event startSendingFailureVesEvents(String identifier) {
+    public VesEvent startSendingFailureVesEvents(String identifier, ReportingMethodEnum reportingMethod) {
 
-        Event vesEvent = vesDataProvider.getFailurePmVesEvent();
+        var vesEvent = vesDataProvider.getFailurePmVesEvent();
 
         enrichWithIdentifier(identifier, vesEvent);
-        vesHolder.startSendingFailureVesEvents(identifier, vesEvent);
+        vesHolder.startSendingFailureVesEvents(identifier, vesEvent, reportingMethod);
         return vesEvent;
     }
 
     @Override
-    public Optional<RanPeriodicVesEvent> stopSendingVesEvents(String identifier) {
+    public Optional<RanPeriodicEvent> stopSendingVesEvents(String identifier) {
         return vesHolder.stopSendingVesEvents(identifier);
     }
 
@@ -71,17 +71,17 @@ public class RanVesBrokerServiceImpl implements RanVesBrokerService {
     }
 
     @Override
-    public Event getEventStructure(String identifier) {
+    public VesEvent getEventStructure(String identifier) {
         return vesHolder.getEventStructure(identifier);
     }
 
     @Override
-    public Event getGlobalPmVesStructure() {
+    public VesEvent getGlobalPmVesStructure() {
         return vesDataProvider.getPmVesEvent();
     }
 
     @Override
-    public void setGlobalPmVesStructure(Event event) {
+    public void setGlobalPmVesStructure(VesEvent event) {
         vesDataProvider.setPmVesEvent(event);
     }
 
@@ -95,20 +95,20 @@ public class RanVesBrokerServiceImpl implements RanVesBrokerService {
         vesDataProvider.setInterval(interval);
     }
 
-    private void enrichWithIdentifier(String identifier, Event event) {
+    private void enrichWithIdentifier(String identifier, VesEvent event) {
         if (event.getMeasurementFields() == null || event.getMeasurementFields().getAdditionalMeasurements() == null) {
             return;
         }
         Collection<AdditionalMeasurement> additionalMeasurements =
                 event.getMeasurementFields().getAdditionalMeasurements();
         Optional<AdditionalMeasurement> identityOpt = additionalMeasurements.stream()
-                                                              .filter(m -> Constants.MEASUREMENT_FIELD_IDENTIFIER
-                                                                                   .equalsIgnoreCase(m.getName()))
-                                                              .findAny();
+                .filter(m -> Constants.MEASUREMENT_FIELD_IDENTIFIER
+                        .equalsIgnoreCase(m.getName()))
+                .findAny();
         if (identityOpt.isPresent()) {
             identityOpt.get().getHashMap().put(Constants.MEASUREMENT_FIELD_IDENTIFIER, identifier);
         } else {
-            AdditionalMeasurement measurement = new AdditionalMeasurement();
+            var measurement = new AdditionalMeasurement();
             measurement.setName(Constants.MEASUREMENT_FIELD_IDENTIFIER);
             measurement.setHashMap(Collections.singletonMap(Constants.MEASUREMENT_FIELD_VALUE, identifier));
             additionalMeasurements.add(measurement);

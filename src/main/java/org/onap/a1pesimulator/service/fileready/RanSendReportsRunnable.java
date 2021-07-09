@@ -11,17 +11,18 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.util;
+package org.onap.a1pesimulator.service.fileready;
 
-public class Constants {
+public class RanSendReportsRunnable implements Runnable {
 
-    private Constants() {
+    protected final RanFileReadyHolder ranFileReadyHolder;
+
+    public RanSendReportsRunnable(RanFileReadyHolder ranFileReadyHolder) {
+        this.ranFileReadyHolder = ranFileReadyHolder;
     }
 
-    public static final String MEASUREMENT_FIELD_IDENTIFIER = "identifier";
-    public static final String MEASUREMENT_FIELD_VALUE = "value";
-    public static final String FILE_READY_CHANGE_IDENTIFIER = "PM_MEAS_FILES";
-    public static final String FILE_READY_CHANGE_TYPE = "FileReady";
-    public static final String EMPTY_STRING = "";
-    public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
+    @Override
+    public void run() {
+        ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessage();
+    }
 }

@@ -11,17 +11,20 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.util;
+package org.onap.a1pesimulator.data.fileready;
 
-public class Constants {
+import java.util.concurrent.ScheduledFuture;
 
-    private Constants() {
-    }
+import org.onap.a1pesimulator.service.fileready.RanSendReportsRunnable;
 
-    public static final String MEASUREMENT_FIELD_IDENTIFIER = "identifier";
-    public static final String MEASUREMENT_FIELD_VALUE = "value";
-    public static final String FILE_READY_CHANGE_IDENTIFIER = "PM_MEAS_FILES";
-    public static final String FILE_READY_CHANGE_TYPE = "FileReady";
-    public static final String EMPTY_STRING = "";
-    public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class RanPeriodicSendReport {
+
+    private Integer interval;
+    private ScheduledFuture<?> scheduledFuture;
+    private RanSendReportsRunnable ranSendReportsRunnable;
 }
