@@ -10,12 +10,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.zip.GZIPOutputStream;
 
+
 import org.onap.a1pesimulator.data.fileready.FileData;
 import org.onap.a1pesimulator.exception.NotUploadedToFtpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.sftp.SFTPClient;
@@ -26,6 +28,14 @@ import reactor.core.publisher.Mono;
 public class FtpServerService {
 
     private static final Logger log = LoggerFactory.getLogger(FtpServerService.class);
+
+    //true - file will be uploaded to FTP; false - file will be copied into xmlPmLocation
+    @Value("${ftp.server.upload}")
+    private boolean ftpServerUpload;
+
+    // location where archived file will be copied
+    @Value("${xml.pm.location}")
+    private String xmlPmLocation;
 
     @Value("${ftp.server.url}")
     private String ftpServerUrl;
@@ -48,7 +58,7 @@ public class FtpServerService {
     public Mono<FileData> uploadFileToFtp(FileData fileData) {
         return Mono.just(fileData)
                 .flatMap(this::tryToCompressFile)
-                .flatMap(this::tryToUploadFileToFtp)
+                .flatMap(this::tryToUploadOrSaveFileToFtp)
                 .onErrorResume(throwable -> resumeError(throwable, fileData))
                 .doOnNext(file -> deletePMBulkFile(file.getPmBulkFile()));
     }
@@ -73,8 +83,28 @@ public class FtpServerService {
             log.trace("Compressing file {}", fileData.getPmBulkFile().getName());
             return Mono.just(fileData);
         } catch (IOException e) {
-            log.error("Could not compress file ", e);
+            log.error("Could not compress file", e);
             return Mono.empty();
+        }
+    }
+
+    /**
+     * Upload file to FTP or copy it to mounted location
+     *
+     * @param fileData data about file
+     * @return fileData for fileReadyEvent
+     */
+    private Mono<FileData> tryToUploadOrSaveFileToFtp(FileData fileData) {
+        if (ftpServerUpload) {
+            return tryToUploadFileToFtp(fileData);
+        } else {
+            File fileOnFtp = new File(xmlPmLocation, fileData.getArchivedPmBulkFile().getName());
+            try {
+                FileCopyUtils.copy(fileData.getArchivedPmBulkFile(), fileOnFtp);
+                return Mono.just(fileData);
+            } catch (IOException e) {
+                return Mono.error(new NotUploadedToFtpException("File was not copied to FTP location", e));
+            }
         }
     }
 
@@ -155,6 +185,10 @@ public class FtpServerService {
 
     /**
      * Try to clean up things after an exception
+     *
+     * @param throwable error thrown
+     * @param fileData data about files which needs to be deleted
+     * @return empty Mono object
      */
     private Mono<FileData> resumeError(Throwable throwable, FileData fileData) {
         log.error("Error occurs while uploading file to FTP server", throwable);
