@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "885bdc53_de74556a",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/common/AbstractRanRunnable.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6641
+      },
+      "writtenOn": "2021-07-13T11:29:40Z",
+      "side": 1,
+      "message": "it looks like this method should never be executed ? can you add at least warning ?",
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
