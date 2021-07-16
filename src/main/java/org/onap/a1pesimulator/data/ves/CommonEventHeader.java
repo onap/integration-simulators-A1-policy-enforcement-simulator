@@ -42,6 +42,8 @@ public class CommonEventHeader {
 
     private Long lastEpochMicrosec;
 
+    private String timeZoneOffset;
+
     private String priority;
 
     private Integer sequence;

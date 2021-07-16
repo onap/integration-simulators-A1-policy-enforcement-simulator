@@ -70,6 +70,9 @@ public class PMBulkFileService {
     @Value("${xml.pm.bulk.userLabel}")
     private String userLabel;
 
+    @Value("${xml.pm.bulk.domainId}")
+    private String domainId;
+
     public PMBulkFileService(VnfConfigReader vnfConfigReader) {
         this.vnfConfigReader = vnfConfigReader;
     }
@@ -237,14 +240,15 @@ public class PMBulkFileService {
      * @param collectedEvents list of stored events
      * @return newly created File
      */
-    private static File getXmlFile(List<EventMemoryHolder> collectedEvents) {
-        StringBuilder fileNameBuilder = new StringBuilder("D");
+    private File getXmlFile(List<EventMemoryHolder> collectedEvents) {
+        StringBuilder fileNameBuilder = new StringBuilder("C");
         ZonedDateTime firstEventTime = earliestEventTime(collectedEvents);
         ZonedDateTime lastEventTime = latestEventTime(collectedEvents);
         fileNameBuilder.append(zonedDateTimeToString(firstEventTime, YYYYMMDD_PATTERN)).append(".");
         fileNameBuilder.append(zonedDateTimeToString(truncateToSpecifiedMinutes(firstEventTime, 5), "HHmmZ")).append("-");
         fileNameBuilder.append(zonedDateTimeToString(lastEventTime, YYYYMMDD_PATTERN)).append(".");
         fileNameBuilder.append(zonedDateTimeToString(truncateToSpecifiedMinutes(lastEventTime, 5), "HHmmZ"));
+        fileNameBuilder.append("_").append(domainId);
         fileNameBuilder.append(appendRcIfNecessary(fileNameBuilder));
         fileNameBuilder.append(".xml");
 
@@ -267,6 +271,7 @@ public class PMBulkFileService {
         if (uniqueFileNamesWithCount.containsKey(fileName)) {
             sequence = uniqueFileNamesWithCount.get(fileName).incrementAndGet();
         } else {
+            uniqueFileNamesWithCount.clear(); //we have new dates, so we can clear existing list to not grow infinitely
             uniqueFileNamesWithCount.put(fileName, new AtomicInteger(0));
         }
         return sequence > 0 ? "_-_" + sequence : EMPTY_STRING;
