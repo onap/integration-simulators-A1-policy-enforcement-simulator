@@ -9,7 +9,7 @@ import lombok.experimental.UtilityClass;
 public class Convertors {
 
     public static final String YYYYMMDD_PATTERN = "yyyyMMdd";
-    public static final String ISO_8601_DATE = "yyyy-MM-dd'T'HH:mm:ssZ";
+    public static final String ISO_8601_DATE = "yyyy-MM-dd'T'HH:mm:ssXXX";
 
     public static String zonedDateTimeToString(ZonedDateTime localDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(YYYYMMDD_PATTERN);

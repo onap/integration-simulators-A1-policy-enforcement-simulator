@@ -5,6 +5,7 @@ import static org.onap.a1pesimulator.util.Constants.FILE_READY_CHANGE_IDENTIFIER
 import static org.onap.a1pesimulator.util.Constants.FILE_READY_CHANGE_TYPE;
 
 import java.io.File;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +51,12 @@ public class FileReadyEventService {
 
     @Value("${file.ready.notificationFieldsVersion}")
     private String notificationFieldsVersion;
+
+    @Value("${file.ready.priority}")
+    private String priority;
+
+    @Value("${file.ready.reportingEntityName}")
+    private String reportingEntityName;
 
     public FileReadyEventService(FtpServerService ftpServerService) {
         this.ftpServerService = ftpServerService;
@@ -118,6 +125,10 @@ public class FileReadyEventService {
                 .domain(domain)
                 .eventName(eventName)
                 .eventId(UUID.randomUUID().toString())
+                .priority(priority)
+                .reportingEntityName(reportingEntityName)
+                .sequence(0)
+                .timeZoneOffset(ZonedDateTime.now().getOffset().toString())
                 .build();
     }
 
