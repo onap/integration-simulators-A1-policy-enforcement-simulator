@@ -22,9 +22,4 @@ public abstract class AbstractRanRunnable implements Runnable {
     public void updateEvent(VesEvent event) {
         this.event = event;
     }
-
-    @Override
-    public void run() {
-        //will be implemented in subclasses
-    }
 }
