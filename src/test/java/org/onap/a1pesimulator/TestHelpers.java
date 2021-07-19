@@ -17,6 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
+
 import org.onap.a1pesimulator.data.cell.CellDetails;
 import org.onap.a1pesimulator.data.cell.CellWithStatus;
 import org.onap.a1pesimulator.data.ue.UserEquipment;
@@ -66,6 +71,18 @@ public class TestHelpers {
         assertEquals(FIRST_CELL_ID, cellWithStatus.getCell().getIdentifier());
         assertFalse(cellWithStatus.isFailureMode());
         assertFalse(cellWithStatus.isVesEnabled());
+    }
+
+    public static void deleteTempFiles(List<File> files) {
+        files.forEach(file -> {
+            try {
+                if (Files.exists(file.toPath())) {
+                    Files.delete(file.toPath());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private TestHelpers() {
