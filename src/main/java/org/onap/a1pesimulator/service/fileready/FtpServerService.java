@@ -142,7 +142,7 @@ public class FtpServerService {
      *
      * @return SSHClient
      */
-    private SSHClient getSSHClient() {
+    protected SSHClient getSSHClient() {
         SSHClient client = new SSHClient();
         try {
             client.addHostKeyVerifier(new PromiscuousVerifier());
@@ -191,7 +191,7 @@ public class FtpServerService {
      * @param fileData data about files which needs to be deleted
      * @return empty Mono object
      */
-    private Mono<FileData> resumeError(Throwable throwable, FileData fileData) {
+    protected Mono<FileData> resumeError(Throwable throwable, FileData fileData) {
         log.error("Error occurs while uploading file to FTP server", throwable);
         deletePMBulkFile(fileData.getPmBulkFile());
         deletePMBulkFile(fileData.getArchivedPmBulkFile());
