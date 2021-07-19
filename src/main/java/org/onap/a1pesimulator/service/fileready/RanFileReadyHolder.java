@@ -91,7 +91,7 @@ public class RanFileReadyHolder {
      *
      * @param fileData object with FileReadyEvent file
      */
-    private void sendEventToVesCollector(FileData fileData) {
+    protected void sendEventToVesCollector(FileData fileData) {
         ranVesSender.send(fileData.getFileReadyEvent());
     }
 

@@ -20,10 +20,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.onap.a1pesimulator.data.fileready.FileData;
-import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import net.schmizz.sshj.SSHClient;
@@ -99,10 +97,7 @@ class FtpServerServiceTest extends CommonFileReady {
      */
     @Test
     void errorWhileDeletingFile() {
-        Logger testLog = (Logger) LoggerFactory.getLogger(FtpServerService.class);
-        ListAppender<ILoggingEvent> appender = new ListAppender<>();
-        appender.start();
-        testLog.addAppender(appender);
+        ListAppender<ILoggingEvent> appender = createCommonLog(FtpServerService.class);
 
         deletePMBulkFile(new File("test.txt"));
         assertThat(appender.list).extracting(ILoggingEvent::getFormattedMessage).containsExactly("Could not delete file: test.txt");
