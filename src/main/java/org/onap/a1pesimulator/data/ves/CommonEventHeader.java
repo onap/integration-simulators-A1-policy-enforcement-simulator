@@ -56,6 +56,8 @@ public class CommonEventHeader {
 
     private String reportingEntityId;
 
+    private String nfVendorName;
+
     private String nfcNamingCode;
 
     private String nfNamingCode;
