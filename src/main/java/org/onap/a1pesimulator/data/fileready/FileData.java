@@ -1,6 +1,7 @@
 package org.onap.a1pesimulator.data.fileready;
 
 import java.io.File;
+import java.time.ZonedDateTime;
 
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,6 @@ public class FileData {
     File pmBulkFile;
     File archivedPmBulkFile;
     FileReadyEvent fileReadyEvent;
+    ZonedDateTime startEventDate;
+    ZonedDateTime endEventDate;
 }

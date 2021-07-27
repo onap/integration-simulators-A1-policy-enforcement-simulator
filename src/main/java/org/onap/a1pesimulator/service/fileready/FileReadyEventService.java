@@ -5,7 +5,9 @@ import static org.onap.a1pesimulator.util.Constants.FILE_READY_CHANGE_IDENTIFIER
 import static org.onap.a1pesimulator.util.Constants.FILE_READY_CHANGE_TYPE;
 
 import java.io.File;
+import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +18,6 @@ import org.onap.a1pesimulator.data.fileready.FileReadyEvent;
 import org.onap.a1pesimulator.data.fileready.NotificationFields;
 import org.onap.a1pesimulator.data.fileready.NotificationFields.ArrayOfNamedHashMap;
 import org.onap.a1pesimulator.data.ves.CommonEventHeader;
-import org.onap.a1pesimulator.util.RanVesUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -81,8 +82,10 @@ public class FileReadyEventService {
      */
     protected FileData createFileReadyEvent(FileData fileData) {
         FileReadyEvent event = new FileReadyEvent();
-        event.setCommonEventHeader(getCommonHeader());
-        RanVesUtils.updateHeader(event);
+        CommonEventHeader commonEventHeader = getCommonHeader();
+        event.setCommonEventHeader(commonEventHeader);
+        commonEventHeader.setStartEpochMicrosec(ChronoUnit.MICROS.between(Instant.EPOCH, fileData.getStartEventDate()));
+        commonEventHeader.setLastEpochMicrosec(ChronoUnit.MICROS.between(Instant.EPOCH, fileData.getEndEventDate()));
         event.setNotificationFields(getNotificationFields(fileData.getArchivedPmBulkFile().getName()));
         fileData.setFileReadyEvent(event);
         return fileData;
