@@ -16,6 +16,24 @@
       "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ee36fc4_262203c2",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/common/AbstractRanRunnable.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-27T08:40:40Z",
+      "side": 1,
+      "message": "It was removed in the following commits, there is no need for that method here.",
+      "parentUuid": "885bdc53_de74556a",
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
