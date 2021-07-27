@@ -137,9 +137,11 @@ public class PMBulkFileService {
 
             File xmlFile = writeDocumentIntoXmlFile(doc, collectedEvents);
 
+            Mono<FileData> justMono = Mono.just(FileData.builder().pmBulkFile(xmlFile).startEventDate(earliestEventTime(collectedEvents))
+                    .endEventDate(latestEventTime(collectedEvents)).build());
             log.trace("Removing all VES events from memory: {}", collectedEvents.size());
             collectedEvents.clear();
-            return Mono.just(FileData.builder().pmBulkFile(xmlFile).build());
+            return justMono;
 
         } catch (ParserConfigurationException | TransformerException pce) {
             log.error("Error occurs while creating PM Bulk File", pce);

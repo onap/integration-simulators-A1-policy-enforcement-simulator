@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.InvalidPathException;
+import java.time.ZonedDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,8 +34,9 @@ class FileReadyEventServiceTest extends CommonFileReady {
 
     @Test
     void createFileReadyEventAndDeleteTmpFile() {
-        Mono<FileData> fileMono = Mono.just(getTestFileData());
-        FileData expectedFileData = fileReadyEventService.createFileReadyEvent(getTestFileData());
+        FileData testData = getTestFileData();
+        Mono<FileData> fileMono = Mono.just(testData);
+        FileData expectedFileData = fileReadyEventService.createFileReadyEvent(testData);
         StepVerifier.create(fileReadyEventService.createFileReadyEventAndDeleteTmpFile(fileMono))
                 .expectNext(expectedFileData)
                 .verifyComplete();
@@ -66,7 +68,8 @@ class FileReadyEventServiceTest extends CommonFileReady {
      */
     private FileData getTestFileData() {
         try {
-            return FileData.builder().pmBulkFile(createTempFile(PM_BULK_FILE)).archivedPmBulkFile(createTempFile(ARCHIVED_PM_BULK_FILE)).build();
+            return FileData.builder().pmBulkFile(createTempFile(PM_BULK_FILE)).startEventDate(ZonedDateTime.now())
+                    .endEventDate(ZonedDateTime.now().plusMinutes(5)).archivedPmBulkFile(createTempFile(ARCHIVED_PM_BULK_FILE)).build();
         } catch (InvalidPathException e) {
             e.printStackTrace();
         }
