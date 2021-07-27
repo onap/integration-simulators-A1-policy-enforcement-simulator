@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "2e7f53de_5a644f6c",
+        "filename": "src/main/java/org/onap/a1pesimulator/controller/RanCellController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-07-27T11:02:11Z",
+      "side": 1,
+      "message": "[Minor] For what reason we need the defaultValue if this param is required?",
+      "range": {
+        "startLine": 103,
+        "startChar": 79,
+        "endLine": 103,
+        "endChar": 88
+      },
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "885bdc53_de74556a",
         "filename": "src/main/java/org/onap/a1pesimulator/service/common/AbstractRanRunnable.java",
         "patchSetId": 2
