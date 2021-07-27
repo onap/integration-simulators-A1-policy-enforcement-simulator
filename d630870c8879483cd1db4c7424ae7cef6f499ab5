@@ -77,6 +77,23 @@
     },
     {
       "key": {
+        "uuid": "6081fff0_e75de15b",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/FtpServerService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-07-27T15:38:38Z",
+      "side": 1,
+      "message": "[Major] If the expetion will be throw and we execute resumeError method, doOnNext will try to delete the file that not exists, becouse we delete this file in resumeError line 99. So here we have potential java.nio.file.NoSuchFileException exeption.",
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ad60c618_e0592e3d",
         "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/RanSendReportsRunnable.java",
         "patchSetId": 2
