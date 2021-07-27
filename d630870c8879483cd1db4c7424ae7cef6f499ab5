@@ -34,6 +34,109 @@
       "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "80171697_6f4d75dd",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/common/AbstractThreadFunction.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-07-27T10:35:12Z",
+      "side": 1,
+      "message": "[Minor] I think this field should be move to RanVesHolder.ThreadSendReportFunction, the same like we have for:\n\n    private static class ThreadVesSendFunction extends AbstractThreadFunction {\n\n        private final RanVesSender vesSender;\n...\n\nBecouse for this class this field isn\u0027t needed.\nI think in AbstractThreadFunction we should have the common part bettewn the ThreadVesSendFunction and ThreadSendReportFunction.",
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad60c618_e0592e3d",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/RanSendReportsRunnable.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-07-27T10:35:12Z",
+      "side": 1,
+      "message": "[Minor] I think the line 35,36 can be deleted.\nHere we want to send only create PM Bulk file and send FileReady event.\nWe don\u0027t need to generate new VesEvent and apply onEventAction, becouse this event not will be save anywhere.",
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09b40e5a_f2e0f8a8",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-07-27T10:35:12Z",
+      "side": 1,
+      "message": "[Question] This value is not use at all. The implemetation that will use this filed will be in next commit in the chain?",
+      "range": {
+        "startLine": 59,
+        "startChar": 34,
+        "endLine": 59,
+        "endChar": 55
+      },
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a890e88_7aeff2c1",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-07-27T10:35:12Z",
+      "side": 1,
+      "message": "[Minor] Maybe we should use some getter ?",
+      "range": {
+        "startLine": 95,
+        "startChar": 36,
+        "endLine": 95,
+        "endChar": 56
+      },
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5755f026_c011614c",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-07-27T10:35:12Z",
+      "side": 1,
+      "message": "[Minor] This class isn\u0027t used at all (like above)\nAlso:\nranFileReadyHolder field isn\u0027t needed for this class.",
+      "range": {
+        "startLine": 213,
+        "startChar": 25,
+        "endLine": 213,
+        "endChar": 47
+      },
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
