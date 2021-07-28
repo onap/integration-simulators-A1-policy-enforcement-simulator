@@ -34,6 +34,24 @@
       "revId": "7651b6a63a5b8f26d2750ebeeef30479009cbc95",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7be7361_8c8f37a0",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/PMBulkFileService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-07-28T08:56:25Z",
+      "side": 1,
+      "message": "I think yes, becouse this is not a problem for us, and we remove one issue which will be potentialy catch by any static code analysis application.",
+      "parentUuid": "fe5becb9_acaef459",
+      "revId": "7651b6a63a5b8f26d2750ebeeef30479009cbc95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
