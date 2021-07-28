@@ -22,6 +22,30 @@
       "revId": "07133623ebbfc3b78c1189dc3268c44dbe05894c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5fcfe811_64745f46",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/FtpServerService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-28T09:24:21Z",
+      "side": 1,
+      "message": "Fixed",
+      "parentUuid": "7b592699_a71b7124",
+      "range": {
+        "startLine": 91,
+        "startChar": 75,
+        "endLine": 91,
+        "endChar": 76
+      },
+      "revId": "07133623ebbfc3b78c1189dc3268c44dbe05894c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
