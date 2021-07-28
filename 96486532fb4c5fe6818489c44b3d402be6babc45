@@ -16,6 +16,24 @@
       "revId": "96486532fb4c5fe6818489c44b3d402be6babc45",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccabb199_55e2d807",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/FtpServerService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-28T12:23:37Z",
+      "side": 1,
+      "message": "Log info was added",
+      "parentUuid": "56e3cc58_3f3ad2e1",
+      "revId": "96486532fb4c5fe6818489c44b3d402be6babc45",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
