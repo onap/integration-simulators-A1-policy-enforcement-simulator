@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5300e2f7_6269e114",
+        "filename": "src/main/java/org/onap/a1pesimulator/controller/RanCellController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-28T08:33:37Z",
+      "side": 1,
+      "message": "Default value is preselected in Swagger when you click on \"Try it out\"",
+      "parentUuid": "2e7f53de_5a644f6c",
+      "range": {
+        "startLine": 103,
+        "startChar": 79,
+        "endLine": 103,
+        "endChar": 88
+      },
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "885bdc53_de74556a",
         "filename": "src/main/java/org/onap/a1pesimulator/service/common/AbstractRanRunnable.java",
         "patchSetId": 2
@@ -77,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "818b5575_25f06a3a",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/common/AbstractThreadFunction.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-28T08:33:37Z",
+      "side": 1,
+      "message": "I removed that abstract class entirely because at the end it was called just from the one subclass.",
+      "parentUuid": "80171697_6f4d75dd",
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6081fff0_e75de15b",
         "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/FtpServerService.java",
         "patchSetId": 2
@@ -94,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "6653922b_769d2392",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/FtpServerService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-28T08:33:37Z",
+      "side": 1,
+      "message": "NoSuchFileException is catched in deletePMBulkFile() by IOException but mainly resumeError returns Mono.empty(), which means that the next step (doOnNext) is not called at all. But I changed that log.error to log.warn because it is actually minor issue.",
+      "parentUuid": "6081fff0_e75de15b",
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ad60c618_e0592e3d",
         "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/RanSendReportsRunnable.java",
         "patchSetId": 2
@@ -108,6 +168,24 @@
       "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23cc0015_25463fbf",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/RanSendReportsRunnable.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-28T08:33:37Z",
+      "side": 1,
+      "message": "Good catch, I removed that",
+      "parentUuid": "ad60c618_e0592e3d",
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -134,6 +212,30 @@
     },
     {
       "key": {
+        "uuid": "c723dfae_803117fa",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-28T08:33:37Z",
+      "side": 1,
+      "message": "You are right, that class has a reference in line 81 but in fact it is not set. I fixed that",
+      "parentUuid": "09b40e5a_f2e0f8a8",
+      "range": {
+        "startLine": 59,
+        "startChar": 34,
+        "endLine": 59,
+        "endChar": 55
+      },
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a890e88_7aeff2c1",
         "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
         "patchSetId": 2
@@ -157,6 +259,30 @@
     },
     {
       "key": {
+        "uuid": "2005ee2d_6ae9998c",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-28T08:33:37Z",
+      "side": 1,
+      "message": "OK, fixed",
+      "parentUuid": "1a890e88_7aeff2c1",
+      "range": {
+        "startLine": 95,
+        "startChar": 36,
+        "endLine": 95,
+        "endChar": 56
+      },
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5755f026_c011614c",
         "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
         "patchSetId": 2
@@ -177,6 +303,30 @@
       "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "280bb143_a003b1c5",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-28T08:33:37Z",
+      "side": 1,
+      "message": "That is right, it was refactored",
+      "parentUuid": "5755f026_c011614c",
+      "range": {
+        "startLine": 213,
+        "startChar": 25,
+        "endLine": 213,
+        "endChar": 47
+      },
+      "revId": "d630870c8879483cd1db4c7424ae7cef6f499ab5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
