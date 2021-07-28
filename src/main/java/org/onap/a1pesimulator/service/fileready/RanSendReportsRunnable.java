@@ -13,27 +13,16 @@
 
 package org.onap.a1pesimulator.service.fileready;
 
-import java.util.Collection;
-
-import org.onap.a1pesimulator.data.ves.VesEvent;
-import org.onap.a1pesimulator.service.common.AbstractRanRunnable;
-import org.onap.a1pesimulator.service.common.EventCustomizer;
-import org.onap.a1pesimulator.service.ves.OnEventAction;
-
-public class RanSendReportsRunnable extends AbstractRanRunnable {
+public class RanSendReportsRunnable implements Runnable {
 
     protected final RanFileReadyHolder ranFileReadyHolder;
 
-    public RanSendReportsRunnable(RanFileReadyHolder ranFileReadyHolder, VesEvent event, EventCustomizer eventCustomizer,
-            Collection<OnEventAction> onEventActions) {
-        super(event, eventCustomizer, onEventActions);
+    public RanSendReportsRunnable(RanFileReadyHolder ranFileReadyHolder) {
         this.ranFileReadyHolder = ranFileReadyHolder;
     }
 
     @Override
     public void run() {
-        VesEvent customizedEvent = eventCustomizer.apply(event);
-        onEventAction.forEach(action -> action.onEvent(customizedEvent));
         ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessage();
     }
 }

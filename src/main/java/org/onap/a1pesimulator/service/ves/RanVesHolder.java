@@ -26,11 +26,10 @@ import java.util.function.BiFunction;
 
 import org.onap.a1pesimulator.data.ReportingMethodEnum;
 import org.onap.a1pesimulator.data.RequestParameters;
-import org.onap.a1pesimulator.data.fileready.RanPeriodicFileReadyEvent;
+import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
+import org.onap.a1pesimulator.data.fileready.RanPeriodicSendReport;
 import org.onap.a1pesimulator.data.ves.VesEvent;
-import org.onap.a1pesimulator.data.ves.RanPeriodicVesEvent;
 import org.onap.a1pesimulator.service.common.AbstractRanRunnable;
-import org.onap.a1pesimulator.service.common.AbstractThreadFunction;
 import org.onap.a1pesimulator.service.common.EventCustomizer;
 import org.onap.a1pesimulator.service.fileready.RanFileReadyHolder;
 import org.onap.a1pesimulator.service.fileready.RanSaveFileReadyRunnable;
@@ -43,11 +42,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
+import lombok.Getter;
+
 @Service
 public class RanVesHolder {
 
     private static final Logger log = LoggerFactory.getLogger(RanVesHolder.class);
-    private final Map<String, RanPeriodicFileReadyEvent> periodicEventsCache = new ConcurrentHashMap<>();
+    private final Map<String, RanPeriodicEvent> periodicEventsCache = new ConcurrentHashMap<>();
 
     private final RanVesDataProvider vesDataProvider;
     private final RanEventCustomizerFactory eventCustomizerFactory;
@@ -56,7 +57,6 @@ public class RanVesHolder {
     private final RanFileReadyHolder ranFileReadyHolder;
     private final RanVesSender vesSender;
     private final VnfConfigReader vnfConfigReader;
-    private ThreadVesSendFunction threadVesSendFunction;
     private ThreadSendReportFunction threadSendReportFunction;
 
     public RanVesHolder(ThreadPoolTaskScheduler vesPmThreadPoolTaskScheduler, RanFileReadyHolder ranFileReadyHolder, RanVesSender vesSender,
@@ -74,14 +74,11 @@ public class RanVesHolder {
 
     /**
      * Thread for periodical sending of PM Bulk Files and fileReady Events
-     *
-     * @param vesEvent initial event from input
      */
-    private void startSendingReports(VesEvent vesEvent) {
-        if (isNull(threadVesSendFunction) || !threadVesSendFunction.isProcessRunning()) {
+    private void startSendingReports() {
+        if (isNull(threadSendReportFunction) || !threadSendReportFunction.isProcessRunning()) {
             int repPeriod = vnfConfigReader.getVnfConfig().getRepPeriod();
-            threadSendReportFunction = new ThreadSendReportFunction(vesPmThreadPoolTaskScheduler, vesEvent, repPeriod,
-                    eventCustomizerFactory.getEventCustomizer(vesEvent, Mode.REGULAR), onEventActions, ranFileReadyHolder);
+            threadSendReportFunction = new ThreadSendReportFunction(vesPmThreadPoolTaskScheduler, repPeriod, ranFileReadyHolder);
             threadSendReportFunction.startEvent();
             log.info("Start sending reports every {} seconds", repPeriod);
         }
@@ -92,7 +89,7 @@ public class RanVesHolder {
      */
     private void stopSendingReports() {
         if (nonNull(threadSendReportFunction) && !isAnyEventRunning()) {
-            threadSendReportFunction.ranPeriodicVesEvent.getScheduledFuture().cancel(false);
+            threadSendReportFunction.getRanPeriodicVesEvent().getScheduledFuture().cancel(false);
             sendLastReportAfterCancel();
             log.info("Stop sending reports every {} seconds", vnfConfigReader.getVnfConfig().getRepPeriod());
         }
@@ -106,7 +103,7 @@ public class RanVesHolder {
         ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessage();
     }
 
-    Map<String, RanPeriodicFileReadyEvent> getPeriodicEventsCache() {
+    Map<String, RanPeriodicEvent> getPeriodicEventsCache() {
         return periodicEventsCache;
     }
 
@@ -117,7 +114,7 @@ public class RanVesHolder {
                         ranFileReadyHolder, vesSender, RequestParameters.builder()
                         .vesEvent(vesEvent).identifier(identifier).reportingMethod(reportingMethod).interval(interval).build()));
         if (ReportingMethodEnum.FILE_READY.equals(reportingMethod)) {
-            startSendingReports(vesEvent);
+            startSendingReports();
         }
         return ResponseEntity.accepted().body("VES Event sending started");
     }
@@ -130,13 +127,13 @@ public class RanVesHolder {
                         vesSender, RequestParameters.builder().vesEvent(vesEvent).identifier(identifier).interval(vesDataProvider.getFailureVesInterval())
                         .reportingMethod(reportingMethod).build()));
         if (ReportingMethodEnum.FILE_READY.equals(reportingMethod)) {
-            startSendingReports(vesEvent);
+            startSendingReports();
         }
         return ResponseEntity.accepted().body("Failure VES Event sending started");
     }
 
-    Optional<RanPeriodicFileReadyEvent> stopSendingVesEvents(String identifier) {
-        RanPeriodicFileReadyEvent periodicEvent = periodicEventsCache.remove(identifier);
+    Optional<RanPeriodicEvent> stopSendingVesEvents(String identifier) {
+        RanPeriodicEvent periodicEvent = periodicEventsCache.remove(identifier);
         if (periodicEvent == null) {
             return Optional.empty();
         }
@@ -166,7 +163,7 @@ public class RanVesHolder {
     }
 
     private static class ThreadCacheUpdateFunction
-            implements BiFunction<String, RanPeriodicFileReadyEvent, RanPeriodicFileReadyEvent> {
+            implements BiFunction<String, RanPeriodicEvent, RanPeriodicEvent> {
 
         private final Integer interval;
         private final ThreadPoolTaskScheduler vesPmThreadPoolTaskScheduler;
@@ -193,7 +190,7 @@ public class RanVesHolder {
         }
 
         @Override
-        public RanPeriodicFileReadyEvent apply(String key, RanPeriodicFileReadyEvent value) {
+        public RanPeriodicEvent apply(String key, RanPeriodicEvent value) {
             if (value != null) {
                 // if thread is registered then cancel it and schedule a new one
                 value.getScheduledFuture().cancel(false);
@@ -204,51 +201,33 @@ public class RanVesHolder {
 
             ScheduledFuture<?> scheduledFuture =
                     vesPmThreadPoolTaskScheduler.scheduleAtFixedRate(ranRunnable, interval * 1000L);
-            return RanPeriodicFileReadyEvent.builder().event(vesEvent).interval(interval).scheduledFuture(scheduledFuture)
-                    .saveFileReadyRunnable(ranRunnable).build();
+            return RanPeriodicEvent.builder().event(vesEvent).interval(interval).scheduledFuture(scheduledFuture)
+                    .ranRunnable(ranRunnable).build();
         }
 
     }
 
-    private static class ThreadVesSendFunction extends AbstractThreadFunction {
+    @Getter
+    private static class ThreadSendReportFunction {
 
-        private final RanVesSender vesSender;
+        protected final Integer interval;
+        protected final ThreadPoolTaskScheduler vesPmThreadPoolTaskScheduler;
+        protected RanPeriodicSendReport ranPeriodicVesEvent;
+        protected ScheduledFuture<?> scheduledFuture;
+        protected final RanFileReadyHolder ranFileReadyHolder;
 
-        public ThreadVesSendFunction(ThreadPoolTaskScheduler vesPmThreadPoolTaskScheduler, VesEvent vesEvent,
-                Integer interval, EventCustomizer eventCustomizer, Collection<OnEventAction> onEventActions, RanFileReadyHolder ranFileReadyHolder,
-                RanVesSender vesSender) {
-            super(vesPmThreadPoolTaskScheduler, vesEvent, interval, eventCustomizer, onEventActions, ranFileReadyHolder);
-            this.vesSender = vesSender;
+        public ThreadSendReportFunction(ThreadPoolTaskScheduler vesPmThreadPoolTaskScheduler, Integer interval, RanFileReadyHolder ranFileReadyHolder) {
+            this.vesPmThreadPoolTaskScheduler = vesPmThreadPoolTaskScheduler;
+            this.interval = interval;
+            this.ranFileReadyHolder = ranFileReadyHolder;
         }
 
         public void startEvent() {
-            RanSendVesRunnable sendVesRunnable =
-                    new RanSendVesRunnable(vesSender, vesEvent, eventCustomizer, onEventActions);
-            scheduledFuture =
-                    vesPmThreadPoolTaskScheduler.scheduleAtFixedRate(sendVesRunnable, interval * 1000L);
-            this.ranPeriodicVesEvent = RanPeriodicVesEvent.builder().event(vesEvent).interval(interval).scheduledFuture(scheduledFuture)
-                    .sendVesRunnable(sendVesRunnable).build();
-        }
-
-        public boolean isProcessRunning() {
-            return (nonNull(scheduledFuture) && !(scheduledFuture.isCancelled() || scheduledFuture.isDone()));
-        }
-    }
-
-    private static class ThreadSendReportFunction extends AbstractThreadFunction {
-
-        public ThreadSendReportFunction(ThreadPoolTaskScheduler vesPmThreadPoolTaskScheduler, VesEvent vesEvent,
-                Integer interval, EventCustomizer eventCustomizer, Collection<OnEventAction> onEventActions, RanFileReadyHolder ranFileReadyHolder) {
-            super(vesPmThreadPoolTaskScheduler, vesEvent, interval, eventCustomizer, onEventActions, ranFileReadyHolder);
-        }
-
-        public void startEvent() {
-            RanSendReportsRunnable sendVesRunnable =
-                    new RanSendReportsRunnable(ranFileReadyHolder, vesEvent, eventCustomizer, onEventActions);
-            scheduledFuture =
-                    vesPmThreadPoolTaskScheduler.scheduleAtFixedRate(sendVesRunnable, interval * 1000L);
-            this.ranPeriodicVesEvent = RanPeriodicVesEvent.builder().event(vesEvent).interval(interval).scheduledFuture(scheduledFuture)
-                    .sendVesRunnable(sendVesRunnable).build();
+            RanSendReportsRunnable ranSendReportsRunnable =
+                    new RanSendReportsRunnable(ranFileReadyHolder);
+            scheduledFuture = vesPmThreadPoolTaskScheduler.scheduleAtFixedRate(ranSendReportsRunnable, interval * 1000L);
+            this.ranPeriodicVesEvent = RanPeriodicSendReport.builder().interval(interval).scheduledFuture(scheduledFuture)
+                    .ranSendReportsRunnable(ranSendReportsRunnable).build();
         }
 
         public boolean isProcessRunning() {

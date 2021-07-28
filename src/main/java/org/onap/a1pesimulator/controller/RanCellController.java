@@ -18,7 +18,7 @@ import java.util.Optional;
 import org.onap.a1pesimulator.data.ReportingMethodEnum;
 import org.onap.a1pesimulator.data.cell.CellDetails;
 import org.onap.a1pesimulator.data.cell.RanCell;
-import org.onap.a1pesimulator.data.fileready.RanPeriodicFileReadyEvent;
+import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.service.cell.RanCellService;
 import org.onap.a1pesimulator.service.cell.RanCellStateService;
@@ -85,7 +85,7 @@ public class RanCellController {
 
         ranCellService.recoverFromFailure(identifier);
 
-        Optional<RanPeriodicFileReadyEvent> vesEvent = ranVesBrokerService.stopSendingVesEvents(identifier);
+        Optional<RanPeriodicEvent> vesEvent = ranVesBrokerService.stopSendingVesEvents(identifier);
 
         if (!vesEvent.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -119,7 +119,7 @@ public class RanCellController {
     @PostMapping(value = "/{identifier}/stop")
     public ResponseEntity<Void> stopSendingVesEvents(@ApiParam(value = "Cell Id") final @PathVariable String identifier) {
         log.info("Stop sending custom ves events for {}", identifier);
-        Optional<RanPeriodicFileReadyEvent> vesEvent = ranVesBrokerService.stopSendingVesEvents(identifier);
+        Optional<RanPeriodicEvent> vesEvent = ranVesBrokerService.stopSendingVesEvents(identifier);
         if (!vesEvent.isPresent()) {
             return ResponseEntity.notFound().build();
         }

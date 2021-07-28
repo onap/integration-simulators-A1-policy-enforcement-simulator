@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.zip.GZIPOutputStream;
 
-
 import org.onap.a1pesimulator.data.fileready.FileData;
 import org.onap.a1pesimulator.exception.NotUploadedToFtpException;
 import org.slf4j.Logger;
@@ -118,7 +117,7 @@ public class FtpServerService {
         if (nonNull(fileData.getArchivedPmBulkFile())) {
             SSHClient client = getSSHClient();
             if (nonNull(client)) {
-                try (client; SFTPClient sftpClient = client.newSFTPClient();) {
+                try (client; SFTPClient sftpClient = client.newSFTPClient()) {
                     File archiveBulkFile = fileData.getArchivedPmBulkFile();
                     sftpClient.put(archiveBulkFile.getAbsolutePath(), ftpServerFilepath + "/" + archiveBulkFile.getName());
 
@@ -169,7 +168,7 @@ public class FtpServerService {
             log.trace("Deleting file: {}", file.getAbsoluteFile());
             Files.delete(file.toPath());
         } catch (IOException e) {
-            log.error("Could not delete file: {}", file.getName(), e);
+            log.warn("Could not delete file: {}", file.getName(), e);
         }
     }
 

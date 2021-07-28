@@ -87,6 +87,9 @@ public class PMBulkFileService {
 
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            docFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            docFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
             //root elements

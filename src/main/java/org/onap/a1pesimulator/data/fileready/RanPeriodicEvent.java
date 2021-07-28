@@ -11,10 +11,11 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.data.ves;
+package org.onap.a1pesimulator.data.fileready;
 
 import java.util.concurrent.ScheduledFuture;
 
+import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.service.common.AbstractRanRunnable;
 
 import lombok.Builder;
@@ -22,10 +23,10 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RanPeriodicVesEvent {
+public class RanPeriodicEvent {
 
     private VesEvent event;
     private Integer interval;
     private ScheduledFuture<?> scheduledFuture;
-    private AbstractRanRunnable sendVesRunnable;
+    private AbstractRanRunnable ranRunnable;
 }

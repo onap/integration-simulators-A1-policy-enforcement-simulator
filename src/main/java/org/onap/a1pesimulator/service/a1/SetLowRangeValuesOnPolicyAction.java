@@ -15,7 +15,7 @@ package org.onap.a1pesimulator.service.a1;
 
 import java.util.List;
 
-import org.onap.a1pesimulator.data.fileready.RanPeriodicFileReadyEvent;
+import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.data.ves.MeasurementFields.AdditionalMeasurement;
 import org.onap.a1pesimulator.service.ves.RanVesBrokerService;
@@ -43,12 +43,12 @@ public class SetLowRangeValuesOnPolicyAction implements OnPolicyAction {
         vesBrokerService.getPeriodicEventsCache().values().forEach(this::updateEvent);
     }
 
-    private void updateEvent(RanPeriodicFileReadyEvent periodicEvent) {
+    private void updateEvent(RanPeriodicEvent periodicEvent) {
         List<AdditionalMeasurement> lowRangeValues = RanVesUtils.setLowRangeValues(
                 periodicEvent.getEvent().getMeasurementFields().getAdditionalMeasurements());
         VesEvent clonedEvent = JsonUtils.INSTANCE.clone(periodicEvent.getEvent());
         clonedEvent.getMeasurementFields().setAdditionalMeasurements(lowRangeValues);
-        periodicEvent.getSaveFileReadyRunnable().updateEvent(clonedEvent);
+        periodicEvent.getRanRunnable().updateEvent(clonedEvent);
     }
 
 }

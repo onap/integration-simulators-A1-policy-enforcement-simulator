@@ -15,18 +15,16 @@ package org.onap.a1pesimulator.data.fileready;
 
 import java.util.concurrent.ScheduledFuture;
 
-import org.onap.a1pesimulator.data.ves.VesEvent;
-import org.onap.a1pesimulator.service.common.AbstractRanRunnable;
+import org.onap.a1pesimulator.service.fileready.RanSendReportsRunnable;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class RanPeriodicFileReadyEvent {
+public class RanPeriodicSendReport {
 
-    private VesEvent event;
     private Integer interval;
     private ScheduledFuture<?> scheduledFuture;
-    private AbstractRanRunnable saveFileReadyRunnable;
+    private RanSendReportsRunnable ranSendReportsRunnable;
 }

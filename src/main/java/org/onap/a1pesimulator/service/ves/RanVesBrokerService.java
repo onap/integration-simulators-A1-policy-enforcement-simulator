@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.onap.a1pesimulator.data.ReportingMethodEnum;
-import org.onap.a1pesimulator.data.fileready.RanPeriodicFileReadyEvent;
+import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.springframework.http.ResponseEntity;
 
@@ -26,9 +26,9 @@ public interface RanVesBrokerService {
 
     ResponseEntity<String> startSendingVesEvents(String identifier, VesEvent vesEvent, Integer interval, ReportingMethodEnum reportingMethods);
 
-    Optional<RanPeriodicFileReadyEvent> stopSendingVesEvents(String identifier);
+    Optional<RanPeriodicEvent> stopSendingVesEvents(String identifier);
 
-    Map<String, RanPeriodicFileReadyEvent> getPeriodicEventsCache();
+    Map<String, RanPeriodicEvent> getPeriodicEventsCache();
 
     Collection<String> getEnabledEventElementIdentifiers();
 

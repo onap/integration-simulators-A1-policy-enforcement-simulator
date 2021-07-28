@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.onap.a1pesimulator.data.ReportingMethodEnum;
-import org.onap.a1pesimulator.data.fileready.RanPeriodicFileReadyEvent;
+import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.data.ves.MeasurementFields.AdditionalMeasurement;
 import org.onap.a1pesimulator.util.Constants;
@@ -39,7 +39,7 @@ public class RanVesBrokerServiceImpl implements RanVesBrokerService {
     }
 
     @Override
-    public Map<String, RanPeriodicFileReadyEvent> getPeriodicEventsCache() {
+    public Map<String, RanPeriodicEvent> getPeriodicEventsCache() {
         return vesHolder.getPeriodicEventsCache();
     }
 
@@ -61,7 +61,7 @@ public class RanVesBrokerServiceImpl implements RanVesBrokerService {
     }
 
     @Override
-    public Optional<RanPeriodicFileReadyEvent> stopSendingVesEvents(String identifier) {
+    public Optional<RanPeriodicEvent> stopSendingVesEvents(String identifier) {
         return vesHolder.stopSendingVesEvents(identifier);
     }
 
