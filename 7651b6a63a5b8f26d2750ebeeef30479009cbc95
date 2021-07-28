@@ -52,6 +52,24 @@
       "revId": "7651b6a63a5b8f26d2750ebeeef30479009cbc95",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5dbb371_cc9a41dd",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/PMBulkFileService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-07-28T09:37:18Z",
+      "side": 1,
+      "message": "OK, I added it there.",
+      "parentUuid": "b7be7361_8c8f37a0",
+      "revId": "7651b6a63a5b8f26d2750ebeeef30479009cbc95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
