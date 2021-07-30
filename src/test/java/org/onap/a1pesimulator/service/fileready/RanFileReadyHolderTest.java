@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.http.HttpStatus;
@@ -53,7 +54,16 @@ class RanFileReadyHolderTest extends CommonFileReady {
 
         ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessage();
         assertThat(appender.list).extracting(ILoggingEvent::getFormattedMessage)
-                .containsExactly("PM Bulk file was generated, uploaded to FTP and File ready event was send to VES Collector");
+                .contains("PM Bulk file was generated, uploaded to FTP and File ready event was send to VES Collector");
+    }
+
+    @Test
+    void createPMBulkFileAndSendFileReadyMessageForOneCell() {
+        ListAppender<ILoggingEvent> appender = createCommonLogAndMock();
+
+        ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessageForCellId(TEST_CELL_ID);
+        assertThat(appender.list).extracting(ILoggingEvent::getFormattedMessage)
+                .contains("PM Bulk file was generated, uploaded to FTP and File ready event was send to VES Collector");
     }
 
     @Test
@@ -62,18 +72,19 @@ class RanFileReadyHolderTest extends CommonFileReady {
         doReturn(Mono.error(new Exception("error"))).when(fileReadyEventService).createFileReadyEventAndDeleteTmpFile(any());
 
         ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessage();
-        assertThat(appender.list).extracting(ILoggingEvent::getFormattedMessage).containsExactly("File ready event was unsuccessful: error");
+        assertThat(appender.list).extracting(ILoggingEvent::getFormattedMessage).contains("File ready event was unsuccessful: error");
     }
 
     @Test
     void saveEventToMemory() {
         ranFileReadyHolder = spy(new RanFileReadyHolder(ranVesSender, ftpServerService, pmBulkFileService, fileReadyEventService));
         try {
-            ranFileReadyHolder.saveEventToMemory(loadEventFromFile(), "Cell1", UUID.randomUUID().toString(), 30);
+            ranFileReadyHolder.saveEventToMemory(loadEventFromFile(), TEST_CELL_ID, UUID.randomUUID().toString(), 30);
+            ranFileReadyHolder.saveEventToMemory(loadEventFromFile(), TEST_CELL_ID, UUID.randomUUID().toString(), 30);
         } catch (VesBrokerException e) {
             e.printStackTrace();
         }
-        assertThat(ranFileReadyHolder.getCollectedEvents()).hasSize(1);
+        assertThat(ranFileReadyHolder.getCollectedEventsByCell().get(TEST_CELL_ID)).hasSize(2);
     }
 
     @Test
@@ -81,15 +92,28 @@ class RanFileReadyHolderTest extends CommonFileReady {
         doThrow(new VesBrokerException("error")).when(ranFileReadyHolder).saveEventToMemory(any(), any(), any(), any());
 
         Throwable exception = assertThrows(VesBrokerException.class,
-                () -> ranFileReadyHolder.saveEventToMemory(loadEventFromFile(), "Cell1", UUID.randomUUID().toString(), 30));
+                () -> ranFileReadyHolder.saveEventToMemory(loadEventFromFile(), TEST_CELL_ID, UUID.randomUUID().toString(), 30));
         assertThat(exception.getMessage()).contains("error");
-        assertThat(ranFileReadyHolder.getCollectedEvents()).isEmpty();
+        assertThat(ranFileReadyHolder.getCollectedEventsByCell()).isEmpty();
+    }
+
+    @Test
+    void getCollectedEventsByCell() {
+        Map<String, List<EventMemoryHolder>> collectedEvents = ranFileReadyHolder.getCollectedEventsByCell();
+        assertNotNull(collectedEvents);
     }
 
     @Test
     void getCollectedEvents() {
-        List<EventMemoryHolder> collectedEvents = ranFileReadyHolder.getCollectedEvents();
+        List<EventMemoryHolder> collectedEvents = ranFileReadyHolder.getCollectedEventsForCellId(TEST_CELL_ID);
         assertNotNull(collectedEvents);
+        try {
+            ranFileReadyHolder.saveEventToMemory(loadEventFromFile(), TEST_CELL_ID, UUID.randomUUID().toString(), 30);
+            collectedEvents = ranFileReadyHolder.getCollectedEventsForCellId(TEST_CELL_ID);
+            assertNotNull(collectedEvents);
+        } catch (VesBrokerException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -101,9 +125,11 @@ class RanFileReadyHolderTest extends CommonFileReady {
         ListAppender<ILoggingEvent> appender = createCommonLog(RanFileReadyHolder.class);
 
         List<EventMemoryHolder> collectedEvents = getTestEvents();
+        Map<String, List<EventMemoryHolder>> collectedEventsByCell = getTestEventsByCells(collectedEvents);
         FileData testFileData = FileData.builder().pmBulkFile(createTempFile(PM_BULK_FILE)).build();
 
-        doReturn(collectedEvents).when(ranFileReadyHolder).getCollectedEvents();
+        doReturn(collectedEventsByCell).when(ranFileReadyHolder).getCollectedEventsByCell();
+        doReturn(collectedEvents).when(ranFileReadyHolder).getCollectedEventsForCellId(any());
         doReturn(Mono.just(testFileData)).when(pmBulkFileService).generatePMBulkFileXml(collectedEvents);
         testFileData.setArchivedPmBulkFile(createTempFile(ARCHIVED_PM_BULK_FILE));
         doReturn(Mono.just(testFileData)).when(ftpServerService).uploadFileToFtp(any());
