@@ -12,7 +12,9 @@ import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
@@ -36,7 +38,9 @@ public class CommonFileReady {
     public List<File> filesToDelete;  //we collect files created during testing and then delete them
     public static final String PM_BULK_FILE = "pmBulkFile.xml";
     public static final String ARCHIVED_PM_BULK_FILE = "pmBulkFile.xml.gz";
+    public static final String TEST_CELL_ID = "Cell1";
     public static final Integer NO_OF_EVENTS = 3;
+    public static final Integer NO_OF_CELLS = 2;
 
     @InjectMocks
     private ObjectMapper mapper;
@@ -80,10 +84,24 @@ public class CommonFileReady {
     protected List<EventMemoryHolder> getTestEvents() {
         List<EventMemoryHolder> collectedEvents = new ArrayList<>();
         for (int i = 0; i < NO_OF_EVENTS; i++) {
-            EventMemoryHolder eventMemoryHolder = new EventMemoryHolder("Cell1", UUID.randomUUID().toString(), 10, ZonedDateTime.now(), loadEventFromFile());
+            EventMemoryHolder eventMemoryHolder = new EventMemoryHolder(TEST_CELL_ID, UUID.randomUUID().toString(), 10, ZonedDateTime.now(),
+                    loadEventFromFile());
             collectedEvents.add(eventMemoryHolder);
         }
         return collectedEvents;
+    }
+
+    /**
+     * Generate events by CellId
+     *
+     * @return Map by CellId and list of events
+     */
+    protected Map<String, List<EventMemoryHolder>> getTestEventsByCells(List<EventMemoryHolder> eventList) {
+        Map<String, List<EventMemoryHolder>> collectedEventsByCell = new HashMap<>();
+        for (int cellId = 0; cellId < NO_OF_CELLS; cellId++) {
+            collectedEventsByCell.put("Cell" + cellId, eventList);
+        }
+        return collectedEventsByCell;
     }
 
     /**
