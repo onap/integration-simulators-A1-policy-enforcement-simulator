@@ -87,20 +87,20 @@ public class RanVesHolder {
     /**
      * Stops sending the report after the last cell was stopped. It send the last report before stop completely
      */
-    private void stopSendingReports() {
+    private void stopSendingReports(String cellId) {
+        sendLastReport(cellId);
         if (nonNull(threadSendReportFunction) && !isAnyEventRunning()) {
             threadSendReportFunction.getRanPeriodicVesEvent().getScheduledFuture().cancel(false);
-            sendLastReportAfterCancel();
             log.info("Stop sending reports every {} seconds", vnfConfigReader.getVnfConfig().getRepPeriod());
         }
     }
 
     /**
-     * Sends the last report after all threads were stopped
+     * Sends the last report after specific cell was stopped
      */
-    private void sendLastReportAfterCancel() {
-        log.trace("Send last report after report thread was canceled");
-        ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessage();
+    private void sendLastReport(String cellId) {
+        log.trace("Send last report after stop for cell: {}", cellId);
+        ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessageForCellId(cellId);
     }
 
     Map<String, RanPeriodicEvent> getPeriodicEventsCache() {
@@ -138,7 +138,7 @@ public class RanVesHolder {
             return Optional.empty();
         }
         periodicEvent.getScheduledFuture().cancel(false);
-        stopSendingReports();
+        stopSendingReports(identifier);
         return Optional.of(periodicEvent);
     }
 

@@ -41,7 +41,7 @@ class RanSaveFileReadyRunnableTest extends CommonFileReady {
         super.setUp();
         doReturn(new RanCellEventCustomizer(ranUeHolder)).when(ranEventCustomizerFactory).getEventCustomizer(any(), any());
         ranSaveFileReadyRunnable = spy(
-                new RanSaveFileReadyRunnable(ranFileReadyHolder, "Cell1", loadEventFromFile(), ranEventCustomizerFactory.getEventCustomizer(new VesEvent(),
+                new RanSaveFileReadyRunnable(ranFileReadyHolder, TEST_CELL_ID, loadEventFromFile(), ranEventCustomizerFactory.getEventCustomizer(new VesEvent(),
                         Mode.REGULAR), 60, Collections.emptyList()));
     }
 
