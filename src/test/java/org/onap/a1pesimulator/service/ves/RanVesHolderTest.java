@@ -1,0 +1,128 @@
+package org.onap.a1pesimulator.service.ves;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.onap.a1pesimulator.data.ReportingMethodEnum;
+import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
+import org.onap.a1pesimulator.data.ves.VesEvent;
+import org.onap.a1pesimulator.service.common.EventCustomizer;
+import org.onap.a1pesimulator.service.fileready.CommonFileReady;
+import org.onap.a1pesimulator.service.fileready.RanFileReadyHolder;
+import org.onap.a1pesimulator.service.ue.RanUeHolder;
+import org.onap.a1pesimulator.util.VnfConfigReader;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.test.util.ReflectionTestUtils;
+
+class RanVesHolderTest extends CommonFileReady {
+
+    private RanVesHolder ranCellsHolder;
+
+    @Mock
+    RanVesDataProvider vesDataProvider;
+
+    @Mock
+    Collection<OnEventAction> onEventActions;
+
+    @Mock
+    RanFileReadyHolder ranFileReadyHolder;
+
+    @Mock
+    RanVesSender vesSender;
+
+    @Mock
+    EventCustomizer regularEventCustomizer;
+
+    @Mock
+    RanUeHolder ranUeHolder;
+
+    @InjectMocks
+    VnfConfigReader vnfConfigReader;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(vnfConfigReader, "vnfConfigFile", "src/test/resources/vnf.config");
+        ThreadPoolTaskScheduler vesPmThreadPoolTaskScheduler = spy(new ThreadPoolTaskScheduler());
+        vesPmThreadPoolTaskScheduler.initialize();
+        RanEventCustomizerFactory eventCustomizerFactory = spy(new RanEventCustomizerFactory(regularEventCustomizer, ranUeHolder));
+        ranCellsHolder = spy(new RanVesHolder(vesPmThreadPoolTaskScheduler, ranFileReadyHolder, vesSender,
+                vnfConfigReader, eventCustomizerFactory, vesDataProvider, onEventActions));
+    }
+
+    @Test
+    void getPeriodicEventsCache() {
+        ranCellsHolder.startSendingVesEvents(TEST_CELL_ID, loadEventFromFile(), 10, ReportingMethodEnum.FILE_READY);
+        Map<String, RanPeriodicEvent> periodicEventsCache = ranCellsHolder.getPeriodicEventsCache();
+        assertThat(periodicEventsCache).containsKey(TEST_CELL_ID);
+    }
+
+    @Test
+    void startSendingVesEvents() {
+        ResponseEntity<String> response = ranCellsHolder.startSendingVesEvents(TEST_CELL_ID, loadEventFromFile(), 10, ReportingMethodEnum.FILE_READY);
+        assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.ACCEPTED);
+        assertThat(response.getBody()).contains("VES Event sending started");
+    }
+
+    @Test
+    void startSendingFailureVesEvents() {
+        doReturn(10).when(vesDataProvider).getFailureVesInterval();
+        ResponseEntity<String> response = ranCellsHolder.startSendingFailureVesEvents(TEST_CELL_ID, loadEventFromFile(), ReportingMethodEnum.FILE_READY);
+        assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.ACCEPTED);
+        assertThat(response.getBody()).contains("Failure VES Event sending started");
+    }
+
+    @Test
+    void stopSendingVesEvents() {
+        ranCellsHolder.startSendingVesEvents(TEST_CELL_ID, loadEventFromFile(), 10, ReportingMethodEnum.FILE_READY);
+        Optional<RanPeriodicEvent> response = ranCellsHolder.stopSendingVesEvents(TEST_CELL_ID);
+        assertThat(response).isPresent();
+    }
+
+    @Test
+    void getEnabledEventElementIdentifiers() {
+        ranCellsHolder.startSendingVesEvents(TEST_CELL_ID, loadEventFromFile(), 10, ReportingMethodEnum.VES);
+        Collection<String> elements = ranCellsHolder.getEnabledEventElementIdentifiers();
+        assertThat(elements).isNotEmpty();
+    }
+
+    @Test
+    void isEventEnabled() {
+        ranCellsHolder.startSendingVesEvents(TEST_CELL_ID, loadEventFromFile(), 10, ReportingMethodEnum.FILE_READY);
+        boolean enabled = ranCellsHolder.isEventEnabled(TEST_CELL_ID);
+        assertThat(enabled).isTrue();
+    }
+
+    @Test
+    void isAnyEventRunning() {
+        ranCellsHolder.startSendingVesEvents(TEST_CELL_ID, loadEventFromFile(), 10, ReportingMethodEnum.FILE_READY);
+        boolean isRunning = ranCellsHolder.isAnyEventRunning();
+        assertThat(isRunning).isTrue();
+    }
+
+    @Test
+    void getEventStructure() {
+        VesEvent testedEvent = loadEventFromFile();
+        ranCellsHolder.startSendingVesEvents(TEST_CELL_ID, testedEvent, 10, ReportingMethodEnum.FILE_READY);
+        VesEvent event = ranCellsHolder.getEventStructure(TEST_CELL_ID);
+        assertThat(event).isEqualTo(testedEvent);
+    }
+
+    @Test
+    void getEventStructureError() {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> ranCellsHolder.getEventStructure(TEST_CELL_ID));
+    }
+}
