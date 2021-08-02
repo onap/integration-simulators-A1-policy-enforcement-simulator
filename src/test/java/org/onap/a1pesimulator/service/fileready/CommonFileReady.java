@@ -109,7 +109,7 @@ public class CommonFileReady {
      *
      * @return created VESEvent
      */
-    protected VesEvent loadEventFromFile() {
+    public VesEvent loadEventFromFile() {
         try {
             return mapper.readValue(loadFileContent("VesBrokerControllerTest_pm_ves.json"), VesEvent.class);
         } catch (JsonProcessingException e) {
