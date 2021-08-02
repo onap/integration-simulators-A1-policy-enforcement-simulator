@@ -20,7 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.onap.a1pesimulator.data.cell.CellDetails;
 import org.onap.a1pesimulator.data.cell.CellWithStatus;
@@ -74,7 +76,7 @@ public class TestHelpers {
     }
 
     public static void deleteTempFiles(List<File> files) {
-        files.forEach(file -> {
+        Optional.ofNullable(files).orElse(Collections.emptyList()).forEach(file -> {
             try {
                 if (Files.exists(file.toPath())) {
                     Files.delete(file.toPath());
