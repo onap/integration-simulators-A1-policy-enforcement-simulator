@@ -24,14 +24,17 @@ import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+
 import org.onap.a1pesimulator.data.cell.CellDetails;
 import org.onap.a1pesimulator.data.cell.CellList.Cell;
 import org.onap.a1pesimulator.data.cell.CellList.CellData;
+import org.onap.a1pesimulator.exception.CellNotFoundException;
 import org.onap.a1pesimulator.util.TopologyReader;
 import org.springframework.stereotype.Service;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Service
 public class RanCellsHolder {
@@ -52,7 +55,7 @@ public class RanCellsHolder {
 
     public CellDetails getCellById(String id) {
         if (!cellDetailsById.containsKey(id)) {
-            throw new RuntimeException(MessageFormat.format("Cell not found: {0}", id));
+            throw new CellNotFoundException(MessageFormat.format("Cell not found: {0}", id));
         }
         return cellDetailsById.get(id);
     }

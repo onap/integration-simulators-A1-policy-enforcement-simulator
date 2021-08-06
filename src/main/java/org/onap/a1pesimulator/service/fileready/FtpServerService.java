@@ -13,6 +13,7 @@ import java.util.zip.GZIPOutputStream;
 
 import org.onap.a1pesimulator.data.fileready.FileData;
 import org.onap.a1pesimulator.exception.NotUploadedToFtpException;
+import org.onap.a1pesimulator.util.VnfConfigReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,14 +38,8 @@ public class FtpServerService {
     @Value("${xml.pm.location}")
     private String xmlPmLocation;
 
-    @Value("${ftp.server.url}")
-    private String ftpServerUrl;
-
     @Value("${ftp.server.protocol}")
     private String ftpServerProtocol;
-
-    @Value("${ftp.server.port}")
-    private String ftpServerPort;
 
     @Value("${ftp.server.filepath}")
     private String ftpServerFilepath;
@@ -54,6 +49,12 @@ public class FtpServerService {
 
     @Value("${ftp.server.password}")
     private String ftpServerPassword;
+
+    private VnfConfigReader vnfConfigReader;
+
+    public FtpServerService(VnfConfigReader vnfConfigReader) {
+        this.vnfConfigReader = vnfConfigReader;
+    }
 
     public Mono<FileData> uploadFileToFtp(FileData fileData) {
         return Mono.just(fileData)
@@ -146,7 +147,7 @@ public class FtpServerService {
         SSHClient client = new SSHClient();
         try {
             client.addHostKeyVerifier(new PromiscuousVerifier());
-            client.connect(ftpServerUrl, Integer.parseInt(ftpServerPort));
+            client.connect(vnfConfigReader.getVnfConfig().getFtpHost(), Integer.parseInt(vnfConfigReader.getVnfConfig().getFtpPort()));
             client.authPassword(ftpServerUsername, ftpServerPassword);
             return client;
         } catch (IOException e) {
@@ -180,7 +181,8 @@ public class FtpServerService {
      * @return for example:  "sftp://foo:pass@106.120.119.170:2222/upload/"
      */
     public String getFtpPath() {
-        return ftpServerProtocol + "://" + ftpServerUsername + ":" + ftpServerPassword + "@" + ftpServerUrl + ":" + ftpServerPort + "/" + ftpServerFilepath
+        return ftpServerProtocol + "://" + ftpServerUsername + ":" + ftpServerPassword + "@" + vnfConfigReader.getVnfConfig().getFtpHost() + ":"
+                + vnfConfigReader.getVnfConfig().getFtpPort() + "/" + ftpServerFilepath
                 + "/";
     }
 

@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.onap.a1pesimulator.service.fileready.FtpServerService.deletePMBulkFile;
@@ -16,10 +17,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.onap.a1pesimulator.data.fileready.FileData;
+import org.onap.a1pesimulator.util.VnfConfigReader;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -31,14 +34,23 @@ import reactor.test.StepVerifier;
 
 class FtpServerServiceTest extends CommonFileReady {
 
-    @Spy
-    FtpServerService ftpServerService;
+    private FtpServerService ftpServerService;
 
     @Mock
     SSHClient sshClient;
 
     @Mock
     SFTPClient sftpClient;
+
+    @InjectMocks
+    VnfConfigReader vnfConfigReader;
+
+    @BeforeEach
+    void setUp() {
+        super.setUp();
+        ReflectionTestUtils.setField(vnfConfigReader, "vnfConfigFile", "src/test/resources/vnf.config");
+        ftpServerService = spy(new FtpServerService(vnfConfigReader));
+    }
 
     /**
      * Test to save archived PM Bulk File into specify directory
@@ -85,7 +97,6 @@ class FtpServerServiceTest extends CommonFileReady {
     @Test
     void errorWhileUploadingFileToFtp() {
         ReflectionTestUtils.setField(ftpServerService, "ftpServerUpload", true);
-        ReflectionTestUtils.setField(ftpServerService, "ftpServerPort", "22");
         FileData testFileData = getTestFileData();
         StepVerifier.create(ftpServerService.uploadFileToFtp(testFileData))
                 .verifyComplete();
@@ -112,8 +123,6 @@ class FtpServerServiceTest extends CommonFileReady {
         ftpPathVars.add("ftpServerProtocol");
         ftpPathVars.add("ftpServerUsername");
         ftpPathVars.add("ftpServerPassword");
-        ftpPathVars.add("ftpServerUrl");
-        ftpPathVars.add("ftpServerPort");
         ftpPathVars.add("ftpServerFilepath");
 
         ftpPathVars.forEach(var -> ReflectionTestUtils.setField(ftpServerService, var, var));

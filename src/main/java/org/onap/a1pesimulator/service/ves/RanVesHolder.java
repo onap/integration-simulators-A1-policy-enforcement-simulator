@@ -99,8 +99,10 @@ public class RanVesHolder {
      * Sends the last report after specific cell was stopped
      */
     private void sendLastReportAfterCancel(String cellId) {
-        log.trace("Send last report after stop for cell: {}", cellId);
-        ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessageForCellId(cellId);
+        if (nonNull(threadSendReportFunction)) {
+            log.trace("Send last report after stop for cell: {}", cellId);
+            ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessageForCellId(cellId);
+        }
     }
 
     Map<String, RanPeriodicEvent> getPeriodicEventsCache() {

@@ -60,10 +60,6 @@ public class RanCellController {
 
     @GetMapping(value = "/{identifier}")
     public ResponseEntity<CellDetails> getCellById(final @PathVariable String identifier) {
-
-        if (!ranCellService.getCellIds().contains(identifier)) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(ranCellService.getCellById(identifier));
     }
 
@@ -71,7 +67,7 @@ public class RanCellController {
     @PostMapping(value = "/{identifier}/startFailure")
     public ResponseEntity<String> startSendingFailureVesEvents(@ApiParam(value = "Cell Id") final @PathVariable String identifier,
             @ApiParam(value = "Reporting Method", defaultValue = "FILE_READY", required = true) final @RequestParam() ReportingMethodEnum reportingMethod) {
-
+        checkIfCellExistOrThrowException(identifier);
         ranCellService.failure(identifier);
         ranVesBrokerService.startSendingFailureVesEvents(identifier, reportingMethod);
         ranCellStateService.failingState(identifier);
@@ -82,7 +78,7 @@ public class RanCellController {
     @ApiOperation("Stop sending failure VES events for specific cell")
     @PostMapping(value = "/{identifier}/stopFailure")
     public ResponseEntity<Void> stopSendingFailureVesEvents(@ApiParam(value = "Cell Id") final @PathVariable String identifier) {
-
+        checkIfCellExistOrThrowException(identifier);
         ranCellService.recoverFromFailure(identifier);
 
         Optional<RanPeriodicEvent> vesEvent = ranVesBrokerService.stopSendingVesEvents(identifier);
@@ -101,8 +97,9 @@ public class RanCellController {
             @ApiParam(value = "Cell Id") final @PathVariable String identifier,
             @ApiParam(value = "Granularity period in seconds", example = "60") final @RequestParam(required = false) Integer interval,
             @ApiParam(value = "Reporting Method", defaultValue = "FILE_READY", required = true) final @RequestParam() ReportingMethodEnum reportingMethod) {
-        log.info("Start sending ves events every {} seconds for {} ", getInterval(interval), identifier);
 
+        checkIfCellExistOrThrowException(identifier);
+        log.info("Start sending ves events every {} seconds for {} ", getInterval(interval), identifier);
         VesEvent vesEvent = vesEventOpt.orElse(ranVesBrokerService.getGlobalPmVesStructure());
 
         ResponseEntity<String> responseEntity =
@@ -118,6 +115,7 @@ public class RanCellController {
     @ApiOperation("Stop sending normal VES events for specific cell")
     @PostMapping(value = "/{identifier}/stop")
     public ResponseEntity<Void> stopSendingVesEvents(@ApiParam(value = "Cell Id") final @PathVariable String identifier) {
+        checkIfCellExistOrThrowException(identifier);
         log.info("Stop sending custom ves events for {}", identifier);
         Optional<RanPeriodicEvent> vesEvent = ranVesBrokerService.stopSendingVesEvents(identifier);
         if (!vesEvent.isPresent()) {
@@ -130,6 +128,7 @@ public class RanCellController {
 
     @GetMapping(value = "/{identifier}/eventStructure")
     public ResponseEntity<VesEvent> getVesEventStructure(final @PathVariable String identifier) {
+        checkIfCellExistOrThrowException(identifier);
         if (!ranVesBrokerService.getEnabledEventElementIdentifiers().contains(identifier)) {
             return ResponseEntity.notFound().build();
         }
@@ -141,5 +140,14 @@ public class RanCellController {
             return ranVesBrokerService.getGlobalVesInterval();
         }
         return requested;
+    }
+
+    /**
+     * Check if cell exists otherwise getCellById() throws CellNotFoundException which is catched by RestExceptionHandler.class
+     *
+     * @param identifier cellId
+     */
+    private void checkIfCellExistOrThrowException(String identifier) {
+        ranCellService.getCellById(identifier);
     }
 }
