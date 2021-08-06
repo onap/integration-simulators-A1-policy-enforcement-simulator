@@ -40,6 +40,10 @@ public class VnfConfig {
     private String vnfId;
     @JsonProperty("vnfName")
     private String vnfName;
+    @JsonProperty("ftpHost")
+    private String ftpHost;
+    @JsonProperty("ftpPort")
+    private String ftpPort;
     @JsonProperty("repPeriod")
     private int repPeriod;
 

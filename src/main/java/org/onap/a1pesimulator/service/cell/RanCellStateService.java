@@ -105,13 +105,7 @@ public class RanCellStateService {
     }
 
     private Optional<CellDetails> getCell(String identifier) {
-        CellDetails cell = null;
-        try {
-            cell = cellsHolder.getCellById(identifier);
-        } catch (RuntimeException e) {
-            log.info("Exception was thrown: ", e);
-        }
-
+        CellDetails cell = cellsHolder.getCellById(identifier);
         if (cell == null) {
             return Optional.empty();
         }
