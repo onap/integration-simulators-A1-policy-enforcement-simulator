@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "65aefd69_80fd5c55",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-08-09T11:35:45Z",
+      "side": 1,
+      "message": "[Minor] No is before cancel.\nWe change the order in stopSedningReports. Line 93 to line 91.\nThis is nessesary?",
+      "range": {
+        "startLine": 101,
+        "startChar": 31,
+        "endLine": 101,
+        "endChar": 42
+      },
+      "revId": "8d6261ad718569d0080b5450035955c9823db8a0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
