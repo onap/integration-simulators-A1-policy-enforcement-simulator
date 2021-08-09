@@ -22,6 +22,30 @@
       "revId": "8d6261ad718569d0080b5450035955c9823db8a0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bb99e94_c3fd9745",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-08-09T12:43:25Z",
+      "side": 1,
+      "message": "The reason for that is that previously we send the last report after the last cell was stopped together we cancelling the task for reporting. After the change, when we send separate bulk for each cell, we send \"last report after cancel\" for each cell regardless if other cells are still running.",
+      "parentUuid": "65aefd69_80fd5c55",
+      "range": {
+        "startLine": 101,
+        "startChar": 31,
+        "endLine": 101,
+        "endChar": 42
+      },
+      "revId": "8d6261ad718569d0080b5450035955c9823db8a0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
