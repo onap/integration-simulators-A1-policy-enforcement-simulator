@@ -46,6 +46,30 @@
       "revId": "8d6261ad718569d0080b5450035955c9823db8a0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd5197db_04f6fafa",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-08-09T13:36:25Z",
+      "side": 1,
+      "message": "So we can also rename the method to simply sendLastReport",
+      "parentUuid": "0bb99e94_c3fd9745",
+      "range": {
+        "startLine": 101,
+        "startChar": 31,
+        "endLine": 101,
+        "endChar": 42
+      },
+      "revId": "8d6261ad718569d0080b5450035955c9823db8a0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
