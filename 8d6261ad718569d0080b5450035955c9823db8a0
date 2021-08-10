@@ -70,6 +70,30 @@
       "revId": "8d6261ad718569d0080b5450035955c9823db8a0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78051802_ea3ff87c",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesHolder.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-08-10T09:44:52Z",
+      "side": 1,
+      "message": "Method name updated",
+      "parentUuid": "bd5197db_04f6fafa",
+      "range": {
+        "startLine": 101,
+        "startChar": 31,
+        "endLine": 101,
+        "endChar": 42
+      },
+      "revId": "8d6261ad718569d0080b5450035955c9823db8a0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
