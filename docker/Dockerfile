@@ -4,12 +4,12 @@ COPY --chown=onap:onap a1-pe-simulator*.jar /a1-pe-simulator/a1-pe-simulator.jar
 
 # Create conf directory where vnf.config and topology files will be placed by ONAP controller
 USER root
-RUN mkdir /var/netconf2 && chown onap:onap /var/netconf2
+RUN mkdir /a1-pe-simulator/config && chown onap:onap /a1-pe-simulator/config
 # Create folder for FTP upload via file system and change owner
-RUN mkdir -p /a1pesim/generated_pm_bulks && chown onap:onap /a1pesim/generated_pm_bulks
+RUN mkdir -p /a1-pe-simulator/generated_pm_bulks && chown onap:onap /a1-pe-simulator/generated_pm_bulks
 USER onap
 
-COPY --chown=onap:onap resource/* /var/netconf2/
+COPY --chown=onap:onap resources/ /a1-pe-simulator/config
 
 WORKDIR /a1-pe-simulator
 
