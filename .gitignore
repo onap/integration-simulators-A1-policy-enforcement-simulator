@@ -108,3 +108,6 @@ a1-pe-simulator.iml
 
 # Building docker-image files
 **/docker/resource/*
+
+# Default A1 PM bulk files directory
+generated_pm_bulks/
