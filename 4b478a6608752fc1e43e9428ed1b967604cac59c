@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "05120b80_3e392684",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/fileready/PMBulkFileService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 7825
+      },
+      "writtenOn": "2021-08-23T06:46:40Z",
+      "side": 1,
+      "message": "Optional: that condition can be added as a filter here.",
+      "revId": "4b478a6608752fc1e43e9428ed1b967604cac59c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
