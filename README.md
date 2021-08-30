@@ -1,6 +1,6 @@
 # A1 Policy Enforcement Simulator (A1 PE Simulator)
 
-This simulator supports standard A1-P OSC\_2.1.0 interface. In addition, internal APIs are provided to manage the RAN elements (Cells, UEs) and to customize and send VES Events.
+This simulator supports standard A1-P OSC\_2.1.0 interface. In addition, internal APIs are provided to manage the RAN elements (Cells, UEs) and to customize and send VES Events. A1 PE Simulator can send legacy VES events as well as FileReady events.
 
 ## How to use the A1 PE Simulator?
 
@@ -77,7 +77,7 @@ To refresh the content of those files on runtime, see:
 
 A1 PE Simulator provides REST endpoints that can be used to trigger sending of VES events to DMaaP topic via VES-COLLECTOR (DCAE MS).
 
-The file **vnf.config** provides the connectivity configuration as well as some commonEventHeader default values (like sourceId and sourceName):
+The file **vnf.config** provides the connectivity configuration to VES Collector and FTP server as well as some commonEventHeader default values (like sourceId and sourceName):
 
 ```
 vesHost=vesconsumer
@@ -86,10 +86,16 @@ vesUser=sample1
 vesPassword=sample1
 vnfId=de305d54-75b4-431b-adb2-eb6b9e546014
 vnfName=ibcx0001vm002ssc001
+ftpHost=localhost
+ftpPort=22222
+repPeriod=90
 ```
 
 - vesHost defines the hostname of the VES consumer
 - vesPort defines the port on which consumer expects events
+- ftpHost defines the hostname to FTP server
+- ftpPort defines the port of FTP server
+- repPeriod defines Reporting period for fileReady events in seconds
 - vesUser and vesPassword are used to create the BasicAuth header in the request
 - vnfId, vnfName map to the VES event -> commonEventHeader content:
 
@@ -162,6 +168,13 @@ the only difference is that *measurementFields.additionalMeasurements.latency/th
 ```
 
 **200->500** means that the value will be generated from 200 to 500 (by using the exponential function)
+
+#### Reporting method
+
+There are two options how to generate and collect VES events:
+
+- FILE_READY collects events by each CellId and send those events as FileReady event together with generated PM Bulk XML File.
+- VES sends each Ves event directly to VES Collector for processing
 
 ### A1-P Mediator API
 
@@ -288,6 +301,9 @@ A1 PE Simulator uses the properties to define the following:
 - Cell range
 - Default VES event sending interval
 - Version of the A1 PE Simulator API
+- FTP server connection and configuration
+- FileReady event constants
+- PM Bulk File constants
 
 See (src/main/resources/application.properties) for default values.
 
@@ -302,6 +318,11 @@ The default values can be overridden in multiple ways:
 - VES_COLLECTOR_ENDPOINT=
 - VES_DEFAULTINTERVAL=
 - RESTAPI_VERSION=
+  FTP_SERVER_UPLOAD=
+- FTP_SERVER_PROTOCOL=
+- FTP_SERVER_FILEPATH=
+- FTP_SERVER_UPLOAD=
+- XML_PM_LOCATION=
 
 #### 2. By adding the process arguments
 
@@ -314,8 +335,21 @@ Add -D flag to the execution command:
 - "-Dves.collector.endpoint="
 - "-Dves.defaultinterval="
 - "-Drestapi.version="
+- "-Dftp.server.upload="
+- "-Dftp.server.protocol="
+- "-Dftp.server.filepath="
+- "-Dftp.server.upload="
+- "-Dxml.pm.location="
 
 When running with -Dspring.profiles.active=dev default values for **vnf.config.file**, **topology.cell.config.file** and **topology.ue.config.file** are set to use the example files from *src/test/resources/*
+
+### FTP upload or file copy
+
+In case of FILE_READY Reporting method, simulator creates PM Bulk File on FTP server.
+PM Bulk File can be created on FTP server in 2 ways:
+
+- FTP upload - ftp.server.upload=true - uploads file using FTP connection.
+- Copy file - ftp.server.upload=true - copy file to FTP file location using operating system. File location is specified by _xml.pm.location_ property
 
 ### Refresh the configuration files on runtime
 
