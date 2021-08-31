@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Pawel Slowikowski <p.slowikows2@samsung.com>
+Submitted-by: Pawel Slowikowski <p.slowikows2@samsung.com>
+Submitted-at: Tue, 31 Aug 2021 09:36:06 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/integration/simulators/A1-policy-enforcement-simulator/+/123685
+Project: integration/simulators/A1-policy-enforcement-simulator
+Branch: refs/heads/master
