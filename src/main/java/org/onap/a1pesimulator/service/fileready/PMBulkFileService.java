@@ -17,13 +17,11 @@ import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 import static org.onap.a1pesimulator.util.Constants.EMPTY_STRING;
 import static org.onap.a1pesimulator.util.Constants.MEASUREMENT_FIELD_IDENTIFIER;
-import static org.onap.a1pesimulator.util.Constants.MEASUREMENT_FIELD_VALUE;
 import static org.onap.a1pesimulator.util.Constants.TEMP_DIR;
 import static org.onap.a1pesimulator.util.Convertors.ISO_8601_DATE;
 import static org.onap.a1pesimulator.util.Convertors.YYYYMMDD_PATTERN;
 import static org.onap.a1pesimulator.util.Convertors.truncateToSpecifiedMinutes;
 import static org.onap.a1pesimulator.util.Convertors.zonedDateTimeToString;
-import static org.onap.a1pesimulator.util.RanVesUtils.UE_PARAM_TRAFFIC_MODEL;
 
 import java.io.File;
 import java.time.ZonedDateTime;
@@ -200,8 +198,8 @@ public class PMBulkFileService {
             HashMap<String, String> measurmentMap = new HashMap<>();
             AtomicInteger i = new AtomicInteger(1);
             event.getMeasurementFields().getAdditionalMeasurements().forEach(additionalMeasurement -> {
-                if (Stream.of(UE_PARAM_TRAFFIC_MODEL, MEASUREMENT_FIELD_IDENTIFIER)
-                        .noneMatch(elementName -> elementName.equalsIgnoreCase(additionalMeasurement.getName()))) {
+                if (Stream.of(MEASUREMENT_FIELD_IDENTIFIER)
+                            .noneMatch(elementName -> elementName.equalsIgnoreCase(additionalMeasurement.getName()))) {
                     Element measType = doc.createElement("measType");
                     measInfo.appendChild(measType);
                     measType.setAttribute("p", String.valueOf(i));
@@ -216,13 +214,16 @@ public class PMBulkFileService {
             measInfo.appendChild(measValue);
             measValue.setAttribute("measObjLdn", eventMemoryHolder.getCellId());
             event.getMeasurementFields().getAdditionalMeasurements().stream()
-                    .filter(additionalMeasurement -> measurmentMap.containsKey(additionalMeasurement.getName())).forEach(additionalMeasurement -> {
+                    .filter(additionalMeasurement -> measurmentMap.containsKey(additionalMeasurement.getName()))
+                    .forEach(additionalMeasurement -> {
+                        if (!additionalMeasurement.getMeasurementValue().isEmpty()) {
 
-                        //r elements
-                        Element r = doc.createElement("r");
-                        measValue.appendChild(r);
-                        r.setAttribute("p", measurmentMap.get(additionalMeasurement.getName()));
-                        r.setTextContent(additionalMeasurement.getHashMap().get(MEASUREMENT_FIELD_VALUE));
+                            //r elements
+                            Element r = doc.createElement("r");
+                            measValue.appendChild(r);
+                            r.setAttribute("p", measurmentMap.get(additionalMeasurement.getName()));
+                            r.setTextContent(additionalMeasurement.getMeasurementValue());
+                        }
                     });
         });
     }
