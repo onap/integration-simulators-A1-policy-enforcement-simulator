@@ -15,10 +15,13 @@ package org.onap.a1pesimulator.data.ves;
 
 import static org.onap.a1pesimulator.util.Constants.MEASUREMENT_FIELD_VALUE;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,6 +46,7 @@ public class MeasurementFields {
         private String name;
         private Map<String, String> hashMap;
 
+        @JsonIgnore
         public String getMeasurementValue() {
             if (hashMap.containsKey(MEASUREMENT_FIELD_VALUE)) {
                 return hashMap.get(MEASUREMENT_FIELD_VALUE);
