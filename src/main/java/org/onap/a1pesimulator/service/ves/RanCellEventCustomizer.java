@@ -62,12 +62,12 @@ public class RanCellEventCustomizer implements EventCustomizer {
                         .equalsIgnoreCase(
                                 msrmnt.getName()))
                 .findAny();
-        identity.ifPresent(m -> addTrafficModelMeasurement(event, m));
+        identity.ifPresent(m -> addTrafficModelMeasurement(event));
     }
 
-    private void addTrafficModelMeasurement(VesEvent event, AdditionalMeasurement identity) {
+    private void addTrafficModelMeasurement(VesEvent event) {
         AdditionalMeasurement trafficModelMeasurement =
-                RanVesUtils.buildTrafficModelMeasurement(identity, ranUeHolder, UE_PARAM_TRAFFIC_MODEL_RANGE);
+                RanVesUtils.buildTrafficModelMeasurement( ranUeHolder, UE_PARAM_TRAFFIC_MODEL_RANGE);
         event.getMeasurementFields().getAdditionalMeasurements().add(trafficModelMeasurement);
     }
 }

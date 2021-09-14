@@ -54,14 +54,12 @@ public class RanVesUtils {
         commonEventHeader.setStartEpochMicrosec(getStartEpochMicroseconds());
     }
 
-    public static AdditionalMeasurement buildTrafficModelMeasurement(AdditionalMeasurement identityMeasurement,
-            RanUeHolder ranUeHolder, String valuePattern) {
-        String cellId = identityMeasurement.getHashMap().get(Constants.MEASUREMENT_FIELD_VALUE);
+    public static AdditionalMeasurement buildTrafficModelMeasurement(RanUeHolder ranUeHolder, String valuePattern) {
         AdditionalMeasurement trafficModel = new AdditionalMeasurement();
         Map<String, String> hashMap = new HashMap<>();
         trafficModel.setName(UE_PARAM_TRAFFIC_MODEL);
         trafficModel.setHashMap(hashMap);
-        Collection<UserEquipment> cellUes = ranUeHolder.getUserEquipmentsConnectedToCell(cellId);
+        Collection<UserEquipment> cellUes = ranUeHolder.getUserEquipments();
         cellUes.stream().map(UserEquipment::getId).forEach(ueId -> hashMap.put(ueId, valuePattern));
 
         return trafficModel;
