@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Krystian Kedron <k.kedron@partner.samsung.com>
+Submitted-by: Krystian Kedron <k.kedron@partner.samsung.com>
+Submitted-at: Tue, 14 Sep 2021 06:24:55 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/integration/simulators/A1-policy-enforcement-simulator/+/123979
+Project: integration/simulators/A1-policy-enforcement-simulator
+Branch: refs/heads/master
