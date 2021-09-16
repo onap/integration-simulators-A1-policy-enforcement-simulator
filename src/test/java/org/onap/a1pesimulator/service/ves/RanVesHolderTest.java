@@ -130,12 +130,14 @@ class RanVesHolderTest extends CommonFileReady {
     void getEventStructure() {
         VesEvent testedEvent = loadEventFromFile();
         ranCellsHolder.startSendingVesEvents(TEST_CELL_ID, testedEvent, 10, ReportingMethodEnum.FILE_READY);
-        VesEvent event = ranCellsHolder.getEventStructure(TEST_CELL_ID);
-        assertThat(event).isEqualTo(testedEvent);
+        RanPeriodicEvent event = ranCellsHolder.getPeriodicEventForCell(TEST_CELL_ID);
+        assertThat(event.getEvent()).isEqualTo(testedEvent);
+        assertThat(event.getInterval()).isEqualTo(10);
+        assertThat(event.getReportingMethod()).isEqualTo(ReportingMethodEnum.FILE_READY.getValue());
     }
 
     @Test
     void getEventStructureError() {
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> ranCellsHolder.getEventStructure(TEST_CELL_ID));
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> ranCellsHolder.getPeriodicEventForCell(TEST_CELL_ID));
     }
 }

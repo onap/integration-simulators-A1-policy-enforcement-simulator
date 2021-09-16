@@ -71,8 +71,8 @@ public class RanVesBrokerServiceImpl implements RanVesBrokerService {
     }
 
     @Override
-    public VesEvent getEventStructure(String identifier) {
-        return vesHolder.getEventStructure(identifier);
+    public RanPeriodicEvent getPeriodicEvent(String identifier) {
+        return vesHolder.getPeriodicEventForCell(identifier);
     }
 
     @Override
@@ -93,6 +93,16 @@ public class RanVesBrokerServiceImpl implements RanVesBrokerService {
     @Override
     public void setGlobalVesInterval(Integer interval) {
         vesDataProvider.setInterval(interval);
+    }
+
+    @Override
+    public String getGlobalReportingMethod() {
+        return vesDataProvider.getReportingMethod();
+    }
+
+    @Override
+    public void setGlobalReportingMethod(String reportingMethod) {
+        vesDataProvider.setReportingMethod(reportingMethod);
     }
 
     private void enrichWithIdentifier(String identifier, VesEvent event) {

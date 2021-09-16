@@ -20,6 +20,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GlobalVesConfiguration {
 
-    private Integer interval;
-    private VesEvent event;
+    private final Integer interval;
+    private final VesEvent event;
+    private final String reportingMethod;
 }
