@@ -13,6 +13,7 @@
 
 package org.onap.a1pesimulator.data.fileready;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.concurrent.ScheduledFuture;
 
 import org.onap.a1pesimulator.data.ves.VesEvent;
@@ -23,10 +24,12 @@ import lombok.Data;
 
 @Data
 @Builder
+@JsonIgnoreProperties({ "scheduledFuture", "ranRunnable" })
 public class RanPeriodicEvent {
 
     private VesEvent event;
     private Integer interval;
+    private String reportingMethod;
     private ScheduledFuture<?> scheduledFuture;
     private AbstractRanRunnable ranRunnable;
 }

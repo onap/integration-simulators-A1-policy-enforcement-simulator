@@ -17,7 +17,7 @@ import lombok.Getter;
 
 @Getter
 public enum ReportingMethodEnum {
-    FILE_READY("File ready"),
+    FILE_READY("FILE_READY"),
     VES("VES");
 
     public final String value;

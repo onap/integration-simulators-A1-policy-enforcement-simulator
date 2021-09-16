@@ -32,7 +32,7 @@ public interface RanVesBrokerService {
 
     Collection<String> getEnabledEventElementIdentifiers();
 
-    VesEvent getEventStructure(String identifier);
+    RanPeriodicEvent getPeriodicEvent(String identifier);
 
     VesEvent startSendingFailureVesEvents(String identifier, ReportingMethodEnum reportingMethods);
 
@@ -43,4 +43,8 @@ public interface RanVesBrokerService {
     Integer getGlobalVesInterval();
 
     void setGlobalVesInterval(Integer interval);
+
+    String getGlobalReportingMethod();
+
+    void setGlobalReportingMethod(String reportingMethod);
 }

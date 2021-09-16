@@ -156,12 +156,12 @@ public class RanVesHolder {
         return !periodicEventsCache.isEmpty();
     }
 
-    VesEvent getEventStructure(String identifier) {
+    RanPeriodicEvent getPeriodicEventForCell(String identifier) {
         if (!periodicEventsCache.containsKey(identifier)) {
             throw new IllegalArgumentException(
                     MessageFormat.format("Cannot find event for given source {0}", identifier));
         }
-        return periodicEventsCache.get(identifier).getEvent();
+        return periodicEventsCache.get(identifier);
     }
 
     private static class ThreadCacheUpdateFunction
@@ -203,7 +203,7 @@ public class RanVesHolder {
 
             ScheduledFuture<?> scheduledFuture =
                     vesPmThreadPoolTaskScheduler.scheduleAtFixedRate(ranRunnable, interval * 1000L);
-            return RanPeriodicEvent.builder().event(vesEvent).interval(interval).scheduledFuture(scheduledFuture)
+            return RanPeriodicEvent.builder().event(vesEvent).interval(interval).reportingMethod(reportingMethod.getValue()).scheduledFuture(scheduledFuture)
                     .ranRunnable(ranRunnable).build();
         }
 

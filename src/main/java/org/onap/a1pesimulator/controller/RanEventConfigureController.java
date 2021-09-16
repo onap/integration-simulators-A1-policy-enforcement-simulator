@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping({"${restapi.version}/ran/eventConfig"})
+@RequestMapping({"${restapi.version}/ran/globalPMConfig"})
 public class RanEventConfigureController {
 
     private final RanVesBrokerService ranVesBrokerService;
@@ -33,16 +33,17 @@ public class RanEventConfigureController {
     }
 
     @GetMapping
-    public ResponseEntity<GlobalVesConfiguration> getEventConfig() {
+    public ResponseEntity<GlobalVesConfiguration> getGlobalPMConfig() {
         GlobalVesConfiguration config = new GlobalVesConfiguration(ranVesBrokerService.getGlobalVesInterval(),
-                ranVesBrokerService.getGlobalPmVesStructure());
+                ranVesBrokerService.getGlobalPmVesStructure(), ranVesBrokerService.getGlobalReportingMethod());
         return ResponseEntity.ok(config);
     }
 
     @PostMapping
-    public ResponseEntity<Void> setEventConfig(final @RequestBody GlobalVesConfiguration config) {
+    public ResponseEntity<Void> setGlobalPMConfig(final @RequestBody GlobalVesConfiguration config) {
         ranVesBrokerService.setGlobalPmVesStructure(config.getEvent());
         ranVesBrokerService.setGlobalVesInterval(config.getInterval());
+        ranVesBrokerService.setGlobalReportingMethod(config.getReportingMethod());
         return ResponseEntity.ok().build();
     }
 }

@@ -38,12 +38,18 @@ public class RanVesDataProvider {
     private VesEvent failurePmVesEvent;
     @Setter
     private Integer interval;
+    @Setter
+    private String reportingMethod;
 
     private final Integer defaultInterval;
+    private final String defaultReportingMethod;
     private final ResourceLoader resourceLoader;
 
-    public RanVesDataProvider(@Value("${ves.defaultInterval}") Integer defaultInterval, ResourceLoader resourceLoader) {
+    public RanVesDataProvider(@Value("${ves.defaultInterval}") Integer defaultInterval,
+            @Value("${ves.defaultReportingMethod}") String defaultReportingMethod,
+            ResourceLoader resourceLoader) {
         this.defaultInterval = defaultInterval;
+        this.defaultReportingMethod = defaultReportingMethod;
         this.resourceLoader = resourceLoader;
     }
 
@@ -64,6 +70,14 @@ public class RanVesDataProvider {
             return defaultInterval;
         }
         return interval;
+    }
+
+    public String getReportingMethod() {
+        if (reportingMethod == null) {
+            return defaultReportingMethod;
+        }
+
+        return reportingMethod;
     }
 
     public Integer getFailureVesInterval() {

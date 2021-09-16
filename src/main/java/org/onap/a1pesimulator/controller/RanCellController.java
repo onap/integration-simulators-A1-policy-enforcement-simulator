@@ -126,13 +126,13 @@ public class RanCellController {
         return ResponseEntity.accepted().build();
     }
 
-    @GetMapping(value = "/{identifier}/eventStructure")
-    public ResponseEntity<VesEvent> getVesEventStructure(final @PathVariable String identifier) {
+    @GetMapping(value = "/{identifier}/pmConfig")
+    public ResponseEntity<RanPeriodicEvent> getPMConfig(final @PathVariable String identifier) {
         checkIfCellExistOrThrowException(identifier);
         if (!ranVesBrokerService.getEnabledEventElementIdentifiers().contains(identifier)) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(ranVesBrokerService.getEventStructure(identifier));
+        return ResponseEntity.ok(ranVesBrokerService.getPeriodicEvent(identifier));
     }
 
     private Integer getInterval(Integer requested) {
