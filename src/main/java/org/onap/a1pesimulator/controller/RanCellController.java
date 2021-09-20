@@ -25,6 +25,7 @@ import org.onap.a1pesimulator.service.cell.RanCellStateService;
 import org.onap.a1pesimulator.service.report.RanReportsBrokerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,8 @@ public class RanCellController {
     private final RanCellService ranCellService;
     private final RanCellStateService ranCellStateService;
     private final RanReportsBrokerService ranReportsBrokerService;
+
+    public static final String CONFLICT_ERROR_MESSAGE = "The changing of the cell state is not allowed in current state";
 
     public RanCellController(RanCellService ranCellService, RanCellStateService ranCellStateService,
             RanReportsBrokerService ranReportsBrokerService) {
@@ -68,27 +71,34 @@ public class RanCellController {
     public ResponseEntity<String> startSendingFailureReports(@ApiParam(value = "Cell Id") final @PathVariable String identifier,
             @ApiParam(value = "Reporting Method", defaultValue = "FILE_READY", required = true) final @RequestParam() ReportingMethodEnum reportingMethod) {
         checkIfCellExistOrThrowException(identifier);
-        ranCellService.failure(identifier);
-        ranReportsBrokerService.startSendingFailureReports(identifier, reportingMethod);
-        ranCellStateService.failingState(identifier);
+        if (ranCellStateService.failingState(identifier)) {
+            ranCellService.failure(identifier);
+            ranReportsBrokerService.startSendingFailureReports(identifier, reportingMethod);
 
-        return ResponseEntity.accepted().body("Failure VES Event sending started");
+            return ResponseEntity.accepted().body("Failure VES Event sending started");
+        }
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(CONFLICT_ERROR_MESSAGE);
     }
 
     @ApiOperation("Stop sending failure VES events for specific cell")
     @PostMapping(value = "/{identifier}/stopFailure")
     public ResponseEntity<Void> stopSendingFailureReports(@ApiParam(value = "Cell Id") final @PathVariable String identifier) {
         checkIfCellExistOrThrowException(identifier);
-        ranCellService.recoverFromFailure(identifier);
 
-        Optional<RanPeriodicEvent> vesEvent = ranReportsBrokerService.stopSendingReports(identifier);
+        if (ranCellStateService.stopState(identifier)) {
+            ranCellService.recoverFromFailure(identifier);
 
-        if (!vesEvent.isPresent()) {
-            return ResponseEntity.notFound().build();
+            Optional<RanPeriodicEvent> vesEvent = ranReportsBrokerService.stopSendingReports(identifier);
+
+            if (!vesEvent.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.accepted().build();
         }
 
-        ranCellStateService.stopState(identifier);
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
     @ApiOperation("Start sending normal VES events for specific cell and  in specific granularity period")
@@ -101,15 +111,12 @@ public class RanCellController {
         checkIfCellExistOrThrowException(identifier);
         log.info("Start sending ves events every {} seconds for {} ", getInterval(interval), identifier);
         VesEvent vesEvent = vesEventOpt.orElse(ranReportsBrokerService.getGlobalPmVesStructure());
-
-        ResponseEntity<String> responseEntity =
-                ranReportsBrokerService.startSendingReports(identifier, vesEvent, getInterval(interval), reportingMethod);
-        if (!responseEntity.getStatusCode().is2xxSuccessful()) {
-            return responseEntity;
+        if (ranCellStateService.activateState(identifier)) {
+            return ranReportsBrokerService
+                           .startSendingReports(identifier, vesEvent, getInterval(interval), reportingMethod);
         }
 
-        ranCellStateService.activateState(identifier);
-        return responseEntity;
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(CONFLICT_ERROR_MESSAGE);
     }
 
     @ApiOperation("Stop sending normal VES events for specific cell")
@@ -117,13 +124,16 @@ public class RanCellController {
     public ResponseEntity<Void> stopSendingReports(@ApiParam(value = "Cell Id") final @PathVariable String identifier) {
         checkIfCellExistOrThrowException(identifier);
         log.info("Stop sending custom ves events for {}", identifier);
-        Optional<RanPeriodicEvent> vesEvent = ranReportsBrokerService.stopSendingReports(identifier);
-        if (!vesEvent.isPresent()) {
-            return ResponseEntity.notFound().build();
+        if (ranCellStateService.stopState(identifier)) {
+            Optional<RanPeriodicEvent> vesEvent = ranReportsBrokerService.stopSendingReports(identifier);
+            if (!vesEvent.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.accepted().build();
         }
 
-        ranCellStateService.stopState(identifier);
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
     @GetMapping(value = "/{identifier}/pmConfig")

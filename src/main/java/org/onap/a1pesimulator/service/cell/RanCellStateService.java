@@ -36,34 +36,43 @@ public class RanCellStateService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void activateState(String identifier) {
+    public boolean activateState(String identifier) {
         Optional<CellDetails> cellDetails = getCell(identifier);
         if (cellExist(cellDetails, identifier, "Activate")) {
             boolean changed = nextStateIfPossible(cellDetails.get(), CellStateEnum.INACTIVE);
             if (changed) {
                 sendCellNotification(cellDetails.get());
+                return true;
             }
         }
+
+        return false;
     }
 
-    public void failingState(String identifier) {
+    public boolean failingState(String identifier) {
         Optional<CellDetails> cellDetails = getCell(identifier);
         if (cellExist(cellDetails, identifier, "Failing")) {
             boolean changed = nextStateIfPossible(cellDetails.get(), CellStateEnum.ACTIVE);
             if (changed) {
                 sendCellNotification(cellDetails.get());
+                return true;
             }
         }
+
+        return false;
     }
 
-    public void stopState(String identifier) {
+    public boolean stopState(String identifier) {
         Optional<CellDetails> cellDetails = getCell(identifier);
         if (cellExist(cellDetails, identifier, "Stop")) {
             boolean changed = previousStateIfPossible(cellDetails.get());
             if (changed) {
                 sendCellNotification(cellDetails.get());
+                return true;
             }
         }
+
+        return false;
     }
 
     private boolean cellExist(Optional<CellDetails> cellDetails, String identifier, String actionName) {
