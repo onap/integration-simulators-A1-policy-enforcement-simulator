@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.fileready;
+package org.onap.a1pesimulator.service.pm;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,9 +29,9 @@ import org.mockito.Mock;
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.exception.VesBrokerException;
 import org.onap.a1pesimulator.service.ue.RanUeHolder;
-import org.onap.a1pesimulator.service.ves.RanCellEventCustomizer;
-import org.onap.a1pesimulator.service.ves.RanEventCustomizerFactory;
-import org.onap.a1pesimulator.service.ves.RanEventCustomizerFactory.Mode;
+import org.onap.a1pesimulator.service.report.RanCellEventCustomizer;
+import org.onap.a1pesimulator.service.report.RanEventCustomizerFactory;
+import org.onap.a1pesimulator.service.report.RanEventCustomizerFactory.Mode;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;

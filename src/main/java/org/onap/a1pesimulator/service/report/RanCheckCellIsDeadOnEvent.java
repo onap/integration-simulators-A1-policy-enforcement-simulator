@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.ves;
+package org.onap.a1pesimulator.service.report;
 
 import static org.onap.a1pesimulator.service.cell.RanCellStateService.TOPIC_CELL;
 

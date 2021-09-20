@@ -29,8 +29,8 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.onap.a1pesimulator.data.ReportingMethodEnum;
 import org.onap.a1pesimulator.data.ves.VesEvent;
-import org.onap.a1pesimulator.service.ves.RanVesBrokerService;
-import org.onap.a1pesimulator.service.ves.RanVesSender;
+import org.onap.a1pesimulator.service.report.RanReportsBrokerService;
+import org.onap.a1pesimulator.service.report.RanVesSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
@@ -50,7 +50,7 @@ public class VesBrokerServiceImplTest {
     private static final String VES_COLLECTOR_URL = "someProtocol://someVesCollectorIP:someVesCollectorPort/somePath";
 
     @Autowired
-    private RanVesBrokerService vesBrokerService;
+    private RanReportsBrokerService vesBrokerService;
     @Autowired
     private RanVesSender vesSender;
     @Autowired
@@ -70,7 +70,7 @@ public class VesBrokerServiceImplTest {
         when(restTemplate.exchange(ArgumentMatchers.eq(VES_COLLECTOR_URL), ArgumentMatchers.eq(HttpMethod.POST),
                 ArgumentMatchers.any(HttpEntity.class), ArgumentMatchers.eq(String.class))).thenReturn(responseEntity);
 
-        ResponseEntity<String> response = vesBrokerService.startSendingVesEvents("CustomIdentifier",
+        ResponseEntity<String> response = vesBrokerService.startSendingReports("CustomIdentifier",
                 loadEventFromFile("VesBrokerControllerTest_pm_ves.json"), 10, ReportingMethodEnum.VES);
 
         Assert.assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());

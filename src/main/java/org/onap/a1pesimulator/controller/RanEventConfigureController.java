@@ -14,7 +14,7 @@
 package org.onap.a1pesimulator.controller;
 
 import org.onap.a1pesimulator.data.ves.GlobalVesConfiguration;
-import org.onap.a1pesimulator.service.ves.RanVesBrokerService;
+import org.onap.a1pesimulator.service.report.RanReportsBrokerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,24 +26,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping({"${restapi.version}/ran/globalPMConfig"})
 public class RanEventConfigureController {
 
-    private final RanVesBrokerService ranVesBrokerService;
+    private final RanReportsBrokerService ranReportsBrokerService;
 
-    public RanEventConfigureController(RanVesBrokerService ranVesBrokerService) {
-        this.ranVesBrokerService = ranVesBrokerService;
+    public RanEventConfigureController(RanReportsBrokerService ranReportsBrokerService) {
+        this.ranReportsBrokerService = ranReportsBrokerService;
     }
 
     @GetMapping
     public ResponseEntity<GlobalVesConfiguration> getGlobalPMConfig() {
-        GlobalVesConfiguration config = new GlobalVesConfiguration(ranVesBrokerService.getGlobalVesInterval(),
-                ranVesBrokerService.getGlobalPmVesStructure(), ranVesBrokerService.getGlobalReportingMethod());
+        GlobalVesConfiguration config = new GlobalVesConfiguration(ranReportsBrokerService.getGlobalVesInterval(),
+                ranReportsBrokerService.getGlobalPmVesStructure(), ranReportsBrokerService.getGlobalReportingMethod());
         return ResponseEntity.ok(config);
     }
 
     @PostMapping
     public ResponseEntity<Void> setGlobalPMConfig(final @RequestBody GlobalVesConfiguration config) {
-        ranVesBrokerService.setGlobalPmVesStructure(config.getEvent());
-        ranVesBrokerService.setGlobalVesInterval(config.getInterval());
-        ranVesBrokerService.setGlobalReportingMethod(config.getReportingMethod());
+        ranReportsBrokerService.setGlobalPmVesStructure(config.getEvent());
+        ranReportsBrokerService.setGlobalVesInterval(config.getInterval());
+        ranReportsBrokerService.setGlobalReportingMethod(config.getReportingMethod());
         return ResponseEntity.ok().build();
     }
 }

@@ -11,12 +11,18 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.ves;
+package org.onap.a1pesimulator.service.pm;
 
-import org.onap.a1pesimulator.data.ves.VesEvent;
+public class RanSendReportsRunnable implements Runnable {
 
-@FunctionalInterface
-public interface OnEventAction {
+    protected final RanFileReadyHolder ranFileReadyHolder;
 
-    void onEvent(VesEvent event);
+    public RanSendReportsRunnable(RanFileReadyHolder ranFileReadyHolder) {
+        this.ranFileReadyHolder = ranFileReadyHolder;
+    }
+
+    @Override
+    public void run() {
+        ranFileReadyHolder.createPMBulkFileAndSendFileReadyMessage();
+    }
 }

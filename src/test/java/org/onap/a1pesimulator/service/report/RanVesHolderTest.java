@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.ves;
+package org.onap.a1pesimulator.service.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -31,8 +31,8 @@ import org.onap.a1pesimulator.data.ReportingMethodEnum;
 import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.service.common.EventCustomizer;
-import org.onap.a1pesimulator.service.fileready.CommonFileReady;
-import org.onap.a1pesimulator.service.fileready.RanFileReadyHolder;
+import org.onap.a1pesimulator.service.pm.CommonFileReady;
+import org.onap.a1pesimulator.service.pm.RanFileReadyHolder;
 import org.onap.a1pesimulator.service.ue.RanUeHolder;
 import org.onap.a1pesimulator.util.VnfConfigReader;
 import org.springframework.http.HttpStatus;
@@ -127,7 +127,7 @@ class RanVesHolderTest extends CommonFileReady {
     }
 
     @Test
-    void getEventStructure() {
+    void getPMConfiguration() {
         VesEvent testedEvent = loadEventFromFile();
         ranCellsHolder.startSendingVesEvents(TEST_CELL_ID, testedEvent, 10, ReportingMethodEnum.FILE_READY);
         RanPeriodicEvent event = ranCellsHolder.getPeriodicEventForCell(TEST_CELL_ID);
@@ -137,7 +137,7 @@ class RanVesHolderTest extends CommonFileReady {
     }
 
     @Test
-    void getEventStructureError() {
+    void getPMConfigurationError() {
         assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> ranCellsHolder.getPeriodicEventForCell(TEST_CELL_ID));
     }
 }

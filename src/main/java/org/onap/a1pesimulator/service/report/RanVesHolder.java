@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.ves;
+package org.onap.a1pesimulator.service.report;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -31,10 +31,10 @@ import org.onap.a1pesimulator.data.fileready.RanPeriodicSendReport;
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.service.common.AbstractRanRunnable;
 import org.onap.a1pesimulator.service.common.EventCustomizer;
-import org.onap.a1pesimulator.service.fileready.RanFileReadyHolder;
-import org.onap.a1pesimulator.service.fileready.RanSaveFileReadyRunnable;
-import org.onap.a1pesimulator.service.fileready.RanSendReportsRunnable;
-import org.onap.a1pesimulator.service.ves.RanEventCustomizerFactory.Mode;
+import org.onap.a1pesimulator.service.pm.RanFileReadyHolder;
+import org.onap.a1pesimulator.service.pm.RanSaveFileReadyRunnable;
+import org.onap.a1pesimulator.service.pm.RanSendReportsRunnable;
+import org.onap.a1pesimulator.service.report.RanEventCustomizerFactory.Mode;
 import org.onap.a1pesimulator.util.VnfConfigReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

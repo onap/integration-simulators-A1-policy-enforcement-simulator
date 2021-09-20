@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.ves;
+package org.onap.a1pesimulator.service.report;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -27,13 +27,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RanVesBrokerServiceImpl implements RanVesBrokerService {
+public class RanReportsBrokerServiceImpl implements RanReportsBrokerService {
 
     private final RanVesDataProvider vesDataProvider;
 
     private final RanVesHolder vesHolder;
 
-    public RanVesBrokerServiceImpl(RanVesDataProvider vesDataProvider, RanVesHolder vesHolder) {
+    public RanReportsBrokerServiceImpl(RanVesDataProvider vesDataProvider, RanVesHolder vesHolder) {
         this.vesDataProvider = vesDataProvider;
         this.vesHolder = vesHolder;
     }
@@ -44,14 +44,14 @@ public class RanVesBrokerServiceImpl implements RanVesBrokerService {
     }
 
     @Override
-    public ResponseEntity<String> startSendingVesEvents(String identifier, VesEvent vesEvent, Integer interval, ReportingMethodEnum reportingMethod) {
+    public ResponseEntity<String> startSendingReports(String identifier, VesEvent vesEvent, Integer interval, ReportingMethodEnum reportingMethod) {
         enrichWithIdentifier(identifier, vesEvent);
         ResponseEntity<String> response = vesHolder.startSendingVesEvents(identifier, vesEvent, interval, reportingMethod);
         return ResponseEntity.accepted().body(response.getBody());
     }
 
     @Override
-    public VesEvent startSendingFailureVesEvents(String identifier, ReportingMethodEnum reportingMethod) {
+    public VesEvent startSendingFailureReports(String identifier, ReportingMethodEnum reportingMethod) {
 
         var vesEvent = vesDataProvider.getFailurePmVesEvent();
 
@@ -61,7 +61,7 @@ public class RanVesBrokerServiceImpl implements RanVesBrokerService {
     }
 
     @Override
-    public Optional<RanPeriodicEvent> stopSendingVesEvents(String identifier) {
+    public Optional<RanPeriodicEvent> stopSendingReports(String identifier) {
         return vesHolder.stopSendingVesEvents(identifier);
     }
 

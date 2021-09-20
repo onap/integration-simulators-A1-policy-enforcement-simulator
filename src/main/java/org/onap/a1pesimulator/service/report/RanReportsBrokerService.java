@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.ves;
+package org.onap.a1pesimulator.service.report;
 
 import java.util.Collection;
 import java.util.Map;
@@ -22,11 +22,11 @@ import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.springframework.http.ResponseEntity;
 
-public interface RanVesBrokerService {
+public interface RanReportsBrokerService {
 
-    ResponseEntity<String> startSendingVesEvents(String identifier, VesEvent vesEvent, Integer interval, ReportingMethodEnum reportingMethods);
+    ResponseEntity<String> startSendingReports(String identifier, VesEvent vesEvent, Integer interval, ReportingMethodEnum reportingMethods);
 
-    Optional<RanPeriodicEvent> stopSendingVesEvents(String identifier);
+    Optional<RanPeriodicEvent> stopSendingReports(String identifier);
 
     Map<String, RanPeriodicEvent> getPeriodicEventsCache();
 
@@ -34,7 +34,7 @@ public interface RanVesBrokerService {
 
     RanPeriodicEvent getPeriodicEvent(String identifier);
 
-    VesEvent startSendingFailureVesEvents(String identifier, ReportingMethodEnum reportingMethods);
+    VesEvent startSendingFailureReports(String identifier, ReportingMethodEnum reportingMethods);
 
     VesEvent getGlobalPmVesStructure();
 
