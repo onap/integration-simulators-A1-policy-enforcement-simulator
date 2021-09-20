@@ -16,7 +16,7 @@ package org.onap.a1pesimulator.service.common;
 import java.util.Collection;
 
 import org.onap.a1pesimulator.data.ves.VesEvent;
-import org.onap.a1pesimulator.service.ves.OnEventAction;
+import org.onap.a1pesimulator.service.report.OnEventAction;
 
 public abstract class AbstractRanRunnable implements Runnable {
 

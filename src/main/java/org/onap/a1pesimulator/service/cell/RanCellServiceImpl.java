@@ -23,7 +23,7 @@ import org.onap.a1pesimulator.data.cell.CellWithStatus;
 import org.onap.a1pesimulator.data.cell.RanCell;
 import org.onap.a1pesimulator.data.ue.UserEquipment;
 import org.onap.a1pesimulator.service.ue.RanUeHolder;
-import org.onap.a1pesimulator.service.ves.RanVesHolder;
+import org.onap.a1pesimulator.service.report.RanVesHolder;
 import org.springframework.stereotype.Service;
 
 @Service

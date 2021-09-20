@@ -15,7 +15,7 @@ package org.onap.a1pesimulator.data.fileready;
 
 import java.util.concurrent.ScheduledFuture;
 
-import org.onap.a1pesimulator.service.fileready.RanSendReportsRunnable;
+import org.onap.a1pesimulator.service.pm.RanSendReportsRunnable;
 
 import lombok.Builder;
 import lombok.Data;

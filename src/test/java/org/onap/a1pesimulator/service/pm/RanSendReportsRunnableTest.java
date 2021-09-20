@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.fileready;
+package org.onap.a1pesimulator.service.pm;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -23,8 +23,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.onap.a1pesimulator.service.ue.RanUeHolder;
-import org.onap.a1pesimulator.service.ves.RanCellEventCustomizer;
-import org.onap.a1pesimulator.service.ves.RanEventCustomizerFactory;
+import org.onap.a1pesimulator.service.report.RanCellEventCustomizer;
+import org.onap.a1pesimulator.service.report.RanEventCustomizerFactory;
 
 class RanSendReportsRunnableTest extends CommonFileReady {
 

@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.fileready;
+package org.onap.a1pesimulator.service.pm;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

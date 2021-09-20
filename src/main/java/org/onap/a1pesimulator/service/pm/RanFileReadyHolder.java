@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.fileready;
+package org.onap.a1pesimulator.service.pm;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -27,7 +27,7 @@ import org.onap.a1pesimulator.data.fileready.EventMemoryHolder;
 import org.onap.a1pesimulator.data.fileready.FileData;
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.exception.VesBrokerException;
-import org.onap.a1pesimulator.service.ves.RanVesSender;
+import org.onap.a1pesimulator.service.report.RanVesSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

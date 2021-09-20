@@ -11,9 +11,9 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.fileready;
+package org.onap.a1pesimulator.service.pm;
 
-import static org.onap.a1pesimulator.service.fileready.FtpServerService.deletePMBulkFile;
+import static org.onap.a1pesimulator.service.pm.FtpServerService.deletePMBulkFile;
 import static org.onap.a1pesimulator.util.Constants.FILE_READY_CHANGE_IDENTIFIER;
 import static org.onap.a1pesimulator.util.Constants.FILE_READY_CHANGE_TYPE;
 

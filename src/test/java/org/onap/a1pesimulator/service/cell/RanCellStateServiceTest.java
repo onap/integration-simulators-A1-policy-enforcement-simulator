@@ -19,7 +19,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.onap.a1pesimulator.service.fileready.CommonFileReady.TEST_CELL_ID;
+import static org.onap.a1pesimulator.service.pm.CommonFileReady.TEST_CELL_ID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

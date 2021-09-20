@@ -18,7 +18,7 @@ import java.util.List;
 import org.onap.a1pesimulator.data.fileready.RanPeriodicEvent;
 import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.data.ves.MeasurementFields.AdditionalMeasurement;
-import org.onap.a1pesimulator.service.ves.RanVesBrokerService;
+import org.onap.a1pesimulator.service.report.RanReportsBrokerService;
 import org.onap.a1pesimulator.util.JsonUtils;
 import org.onap.a1pesimulator.util.RanVesUtils;
 import org.springframework.stereotype.Service;
@@ -26,9 +26,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SetLowRangeValuesOnPolicyAction implements OnPolicyAction {
 
-    private final RanVesBrokerService vesBrokerService;
+    private final RanReportsBrokerService vesBrokerService;
 
-    public SetLowRangeValuesOnPolicyAction(RanVesBrokerService vesBrokerService) {
+    public SetLowRangeValuesOnPolicyAction(RanReportsBrokerService vesBrokerService) {
         this.vesBrokerService = vesBrokerService;
     }
 

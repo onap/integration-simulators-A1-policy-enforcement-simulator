@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.fileready;
+package org.onap.a1pesimulator.service.pm;
 
 import static java.util.Objects.nonNull;
 import static org.onap.a1pesimulator.util.Constants.TEMP_DIR;

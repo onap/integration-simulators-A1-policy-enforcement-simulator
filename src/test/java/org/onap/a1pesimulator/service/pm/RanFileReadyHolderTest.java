@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.fileready;
+package org.onap.a1pesimulator.service.pm;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -33,7 +33,7 @@ import org.onap.a1pesimulator.data.fileready.EventMemoryHolder;
 import org.onap.a1pesimulator.data.fileready.FileData;
 import org.onap.a1pesimulator.data.fileready.FileReadyEvent;
 import org.onap.a1pesimulator.exception.VesBrokerException;
-import org.onap.a1pesimulator.service.ves.RanVesSender;
+import org.onap.a1pesimulator.service.report.RanVesSender;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;

@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.fileready;
+package org.onap.a1pesimulator.service.pm;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.onap.a1pesimulator.service.fileready.FtpServerService.deletePMBulkFile;
+import static org.onap.a1pesimulator.service.pm.FtpServerService.deletePMBulkFile;
 import static org.onap.a1pesimulator.util.Constants.TEMP_DIR;
 
 import java.io.File;

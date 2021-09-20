@@ -11,7 +11,7 @@
  * limitations under the License
  */
 
-package org.onap.a1pesimulator.service.fileready;
+package org.onap.a1pesimulator.service.pm;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -20,7 +20,7 @@ import org.onap.a1pesimulator.data.ves.VesEvent;
 import org.onap.a1pesimulator.exception.VesBrokerException;
 import org.onap.a1pesimulator.service.common.AbstractRanRunnable;
 import org.onap.a1pesimulator.service.common.EventCustomizer;
-import org.onap.a1pesimulator.service.ves.OnEventAction;
+import org.onap.a1pesimulator.service.report.OnEventAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
