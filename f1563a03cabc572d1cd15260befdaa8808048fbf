@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "22af6a49_e4b8ebf3",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesDataProvider.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 6641
+      },
+      "writtenOn": "2021-09-21T12:39:28Z",
+      "side": 1,
+      "message": "there may be multi threading issue here - without seeing the full code i unable to say how serious it may be.",
+      "revId": "f1563a03cabc572d1cd15260befdaa8808048fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
