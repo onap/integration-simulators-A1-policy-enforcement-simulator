@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Stanislav Marszalek <s.marszalek2@partner.samsung.com>
+Code-Review+1: Jakub Dominik <j.dominik@samsung.com>
+Code-Review+2: Bartek Grzybowski <b.grzybowski@partner.samsung.com>
+Submitted-by: Krystian Kedron <k.kedron@partner.samsung.com>
+Submitted-at: Thu, 23 Sep 2021 10:56:02 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/integration/simulators/A1-policy-enforcement-simulator/+/124353
+Project: integration/simulators/A1-policy-enforcement-simulator
+Branch: refs/heads/master
