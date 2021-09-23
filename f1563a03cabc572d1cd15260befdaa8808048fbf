@@ -16,6 +16,24 @@
       "revId": "f1563a03cabc572d1cd15260befdaa8808048fbf",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f57d63f_a4ae00d4",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesDataProvider.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-09-23T10:55:06Z",
+      "side": 1,
+      "message": "This method is only used to get the global reporting configuration by one endpoint ran/globalConfig, so nothing serious.",
+      "parentUuid": "22af6a49_e4b8ebf3",
+      "revId": "f1563a03cabc572d1cd15260befdaa8808048fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
