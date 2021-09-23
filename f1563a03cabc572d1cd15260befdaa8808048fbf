@@ -34,6 +34,24 @@
       "revId": "f1563a03cabc572d1cd15260befdaa8808048fbf",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f268fb80_522b7362",
+        "filename": "src/main/java/org/onap/a1pesimulator/service/ves/RanVesDataProvider.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2021-09-23T10:55:53Z",
+      "side": 1,
+      "message": "we can take this in consider later to also refactor all getters in this class.",
+      "parentUuid": "4f57d63f_a4ae00d4",
+      "revId": "f1563a03cabc572d1cd15260befdaa8808048fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
