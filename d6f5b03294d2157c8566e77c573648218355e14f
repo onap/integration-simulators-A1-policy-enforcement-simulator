@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Krzysztof Kuzmicki <krzysztof.kuzmicki@nokia.com>
+Submitted-by: Krzysztof Kuzmicki <krzysztof.kuzmicki@nokia.com>
+Submitted-at: Mon, 09 May 2022 06:35:54 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/integration/simulators/A1-policy-enforcement-simulator/+/129108
+Project: integration/simulators/A1-policy-enforcement-simulator
+Branch: refs/heads/master
