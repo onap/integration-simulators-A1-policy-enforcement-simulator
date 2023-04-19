@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Lukasz Rajewski <lukasz.rajewski@t-mobile.pl>
+Submitted-by: Lukasz Rajewski <lukasz.rajewski@t-mobile.pl>
+Submitted-at: Wed, 19 Apr 2023 12:01:07 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/integration/simulators/A1-policy-enforcement-simulator/+/134142
+Project: integration/simulators/A1-policy-enforcement-simulator
+Branch: refs/heads/master
